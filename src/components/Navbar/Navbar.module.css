@@ -1,0 +1,18 @@
+.nav {
+    background: red;
+}
+
+.navlist {
+    display: flex;
+    gap: 20px;
+    list-style: none;
+}
+
+.navlist a {
+    color: black;
+    text-decoration: none;
+}
+
+.navlist a.active {
+    font-weight: bold;
+}

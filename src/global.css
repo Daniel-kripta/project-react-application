@@ -1,0 +1,10 @@
+:root {
+  --green: #CFF0CE;
+  --text-primary-color: #304030;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
