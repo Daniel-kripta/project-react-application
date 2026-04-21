@@ -1,5 +1,15 @@
+.header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
 .nav {
-    background: red;
+    height: 50px;
+    display: grid;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 20px;
 }
 
 .navlist {
@@ -15,4 +25,13 @@
 
 .navlist a.active {
     font-weight: bold;
+}
+
+.logoHeader {
+    height:40px;
+}
+
+.logoHeader img {
+    height: 100%;
+    width: 100%;
 }

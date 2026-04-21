@@ -1,3 +1,14 @@
+import DailyFoods from "../../components/DailyFood/DailyFood";
+import Hero from "../../components/Hero/Hero";
+
 export default function HomePage() {
-  return <main><h1>Homepage</h1></main>;
+  return (
+    <main>
+      <Hero />
+      <section>
+        <h2>Featured Foods of the Day</h2>
+        <DailyFoods />
+      </section>
+    </main>
+  );
 }
