@@ -8,7 +8,7 @@ import Navbar from "./components/Navbar/Navbar";
 import Hero from "./components/Hero/Hero";
 import NutriCalc from "./pages/NutriCalc/NutriCalc";
 import Footer from "./components/Footer/Footer";
-import styles from './App.module.css'; // Importación del módulo
+import styles from './App.module.css'; 
 
 function AppContent() {
   const location = useLocation();

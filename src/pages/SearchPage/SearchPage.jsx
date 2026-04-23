@@ -1,71 +1,154 @@
-import { useState } from "react";
+import { useState, useMemo, useEffect } from "react";
+import { NavLink } from "react-router-dom";
 
-const cache = {}; 
+import { useFoodSearch } from "../../hooks/useFoodSearch"; 
+import { useFoodContext } from "../../context/FoodContext"; 
 
-const getFoodImage = async (foodName) => {
-  const pixabayKey = import.meta.env.VITE_PIXABAY_API_KEY;
-  const query = encodeURIComponent(foodName.split(',')[0].split(' ')[0]); 
-  
-  if (cache[`img_${query}`]) return cache[`img_${query}`];
+export default function SearchPage() {
+  const [inputValue, setInputValue] = useState("");
+  const [onlyFoundation, setOnlyFoundation] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [sortBy, setSortBy] = useState(""); 
+  const [activeNutrients, setActiveNutrients] = useState([]);
+  const [currentNutrient, setCurrentNutrient] = useState("");
 
-  try {
-    const res = await fetch(`https://pixabay.com/api/?key=${pixabayKey}&q=${query}+food&image_type=photo&per_page=3`);
-    const data = await res.json();
-    const url = data.hits?.length > 0 ? data.hits[0].webformatURL : "https://via.placeholder.com/150?text=No+Image";
-    cache[`img_${query}`] = url;
-    return url;
-  } catch (error) {
-    return "https://via.placeholder.com/150?text=Error+Image";
-  }
-};
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 20;
 
-export function useFoodSearch() {
-  const [results, setResults] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const apiKey = import.meta.env.VITE_USDA_API_KEY;
 
-  const searchFood = async (query, onlyFoundation = false) => {
-    const trimmedQuery = query.trim();
-    const searchKey = `${trimmedQuery}_${onlyFoundation}`;
+  const { searchResults, searchLoading, searchError } = useFoodContext(); 
 
-    if (cache[searchKey]) {
-      setResults(cache[searchKey]);
-      return;
-    }
+  const { searchFood } = useFoodSearch(); 
 
-    setLoading(true);
-    setError(null);
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchResults, selectedCategory, activeNutrients]);
 
-    try {
-      const dataTypes = onlyFoundation ? "Foundation" : "Foundation,SR%20Legacy";
-      const q = trimmedQuery === "" ? "%20" : encodeURIComponent(trimmedQuery);
-      const url = `https://api.nal.usda.gov/fdc/v1/foods/search?query=${q}&dataType=${dataTypes}&pageSize=100&api_key=${apiKey}`;
-      
-      const response = await fetch(url);
-      if (!response.ok) throw new Error("Error connecting to USDA");
-      const data = await response.json();
 
-      if (!data.foods) {
-        setResults([]);
-        return;
-      }
+  const categories = useMemo(() => {
+    const cats = searchResults.map(f => f.foodCategory).filter(Boolean);
+    return ["All", ...new Set(cats)];
+  }, [searchResults]);
 
-      const enrichedResults = await Promise.all(
-        data.foods.map(async (food) => {
-          const imagenReal = await getFoodImage(food.description);
-          return { ...food, imagen: imagenReal };
-        })
-      );
+  const availableNutrients = useMemo(() => {
+    const allNutrients = searchResults.flatMap(f => f.foodNutrients.map(n => n.nutrientName));
+    return [...new Set(allNutrients)].sort();
+  }, [searchResults]);
 
-      cache[searchKey] = enrichedResults;
-      setResults(enrichedResults);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
+  const addNutrientFilter = () => {
+    if (currentNutrient && !activeNutrients.includes(currentNutrient)) {
+      setActiveNutrients([...activeNutrients, currentNutrient]);
+      setSortBy(currentNutrient); 
+      setCurrentNutrient("");
     }
   };
 
-  return { results, loading, error, searchFood };
+  const removeNutrientFilter = (name) => {
+    setActiveNutrients(activeNutrients.filter(n => n !== name));
+  };
+
+  const filteredResults = useMemo(() => {
+    let filtered = [...searchResults];
+
+    if (selectedCategory !== "All") {
+      filtered = filtered.filter(f => f.foodCategory === selectedCategory);
+    }
+
+    activeNutrients.forEach(nutrientName => {
+      filtered = filtered.filter(f => 
+        f.foodNutrients.some(n => n.nutrientName === nutrientName && n.value > 0)
+      );
+    });
+
+    if (sortBy) {
+      filtered.sort((a, b) => {
+        const valA = a.foodNutrients.find(n => n.nutrientName === sortBy)?.value || 0;
+        const valB = b.foodNutrients.find(n => n.nutrientName === sortBy)?.value || 0;
+        return valB - valA;
+      });
+    }
+
+    return filtered;
+  }, [searchResults, selectedCategory, activeNutrients, sortBy]);
+
+  const totalPages = Math.ceil(filteredResults.length / itemsPerPage);
+  const currentItems = useMemo(() => {
+    const lastIndex = currentPage * itemsPerPage;
+    const firstIndex = lastIndex - itemsPerPage;
+    return filteredResults.slice(firstIndex, lastIndex);
+  }, [filteredResults, currentPage]);
+
+  return (
+    <main>
+      <h1>Search Food</h1>
+      
+      <div className="search-controls">
+        <input 
+          type="text" 
+          value={inputValue} 
+          onChange={(e) => setInputValue(e.target.value)} 
+          placeholder="Search..." 
+        />
+        <label>
+          <input 
+            type="checkbox" 
+            checked={onlyFoundation} 
+            onChange={(e) => setOnlyFoundation(e.target.checked)} 
+          /> 
+          Only Foundation
+        </label>
+        <button onClick={() => searchFood(inputValue, onlyFoundation)}>Search</button>
+      </div>
+
+      {searchResults.length > 0 && (
+        <div className="filters-section">
+          <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)}>
+            {categories.map(c => <option key={c} value={c}>{c}</option>)}
+          </select>
+
+          <select value={currentNutrient} onChange={(e) => setCurrentNutrient(e.target.value)}>
+            <option value="">Choose nutrient...</option>
+            {availableNutrients.map(n => <option key={n} value={n}>{n}</option>)}
+          </select>
+          <button onClick={addNutrientFilter}>Add Nutrient</button>
+
+          <div className="active-tags">
+            {activeNutrients.map(n => (
+              <span key={n} className="tag">
+                {n} <button onClick={() => removeNutrientFilter(n)}>&times;</button>
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {searchLoading && <p>Loading data...</p>}
+      {searchError && <p>{searchError}</p>}
+      
+      <div className="results-container">
+        {currentItems.map((food) => (
+          <div key={food.fdcId} className="result-item">
+            <NavLink to={`/food/${food.fdcId}`}>
+              <img src={food.imagen} alt={food.description} />
+              <h4>{food.description}</h4>
+              <div className="nutrients-display">
+                {activeNutrients.map(nutName => {
+                  const nut = food.foodNutrients.find(n => n.nutrientName === nutName);
+                  return <span key={nutName}>{nutName}: {nut?.value} {nut?.unitName}</span>;
+                })}
+              </div>
+            </NavLink>
+          </div>
+        ))}
+      </div>
+
+      {totalPages > 1 && (
+        <div className="pagination">
+          <button disabled={currentPage === 1} onClick={() => setCurrentPage(prev => prev - 1)}>Prev</button>
+          <span>Page {currentPage} of {totalPages}</span>
+          <button disabled={currentPage === totalPages} onClick={() => setCurrentPage(prev => prev + 1)}>Next</button>
+        </div>
+      )}
+    </main>
+  );
 }

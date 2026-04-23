@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useFoodContext } from "../context/FoodContext"; 
 
 const getFoodImage = async (foodName) => {
   const pixabayKey = import.meta.env.VITE_PIXABAY_API_KEY;
@@ -13,14 +13,16 @@ const getFoodImage = async (foodName) => {
 };
 
 export function useFoodSearch() {
-  const [results, setResults] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  
+  const { setSearchResults, setSearchLoading, setSearchError } = useFoodContext(); 
+
   const apiKey = import.meta.env.VITE_USDA_API_KEY;
 
   const searchFood = async (query, onlyFoundation = false) => {
-    setLoading(true);
-    setError(null);
+    
+    setSearchLoading(true);
+    setSearchError(null);
+
     try {
       const dataTypes = onlyFoundation ? "Foundation" : "Foundation,SR%20Legacy";
       const q = query.trim() === "" ? "%20" : encodeURIComponent(query);
@@ -32,7 +34,7 @@ export function useFoodSearch() {
       const data = await response.json();
 
       if (!data.foods || data.foods.length === 0) {
-        setResults([]);
+        setSearchResults([]);
         return;
       }
 
@@ -42,13 +44,15 @@ export function useFoodSearch() {
           return { ...food, imagen: imagenReal };
         })
       );
-      setResults(enrichedResults);
+
+      setSearchResults(enrichedResults);
     } catch (err) {
-      setError(err.message);
+      setSearchError(err.message);
     } finally {
-      setLoading(false);
+      setSearchLoading(false);
     }
   };
 
-  return { results, loading, error, searchFood };
+
+  return { searchFood };
 }
