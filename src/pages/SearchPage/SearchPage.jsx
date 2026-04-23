@@ -1,59 +1,71 @@
 import { useState } from "react";
-import { useFoodSearch } from "../../hooks/useFoodSearch";
-import { NavLink } from "react-router-dom";
 
-export default function SearchPage() {
-  const [inputValue, setInputValue] = useState("");
+const cache = {}; 
 
-  const { results, loading, error, searchFood } = useFoodSearch();
+const getFoodImage = async (foodName) => {
+  const pixabayKey = import.meta.env.VITE_PIXABAY_API_KEY;
+  const query = encodeURIComponent(foodName.split(',')[0].split(' ')[0]); 
+  
+  if (cache[`img_${query}`]) return cache[`img_${query}`];
 
-  const handleSearch = (e) => {
-    e.preventDefault();
-    searchFood(inputValue);
+  try {
+    const res = await fetch(`https://pixabay.com/api/?key=${pixabayKey}&q=${query}+food&image_type=photo&per_page=3`);
+    const data = await res.json();
+    const url = data.hits?.length > 0 ? data.hits[0].webformatURL : "https://via.placeholder.com/150?text=No+Image";
+    cache[`img_${query}`] = url;
+    return url;
+  } catch (error) {
+    return "https://via.placeholder.com/150?text=Error+Image";
+  }
+};
+
+export function useFoodSearch() {
+  const [results, setResults] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const apiKey = import.meta.env.VITE_USDA_API_KEY;
+
+  const searchFood = async (query, onlyFoundation = false) => {
+    const trimmedQuery = query.trim();
+    const searchKey = `${trimmedQuery}_${onlyFoundation}`;
+
+    if (cache[searchKey]) {
+      setResults(cache[searchKey]);
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+
+    try {
+      const dataTypes = onlyFoundation ? "Foundation" : "Foundation,SR%20Legacy";
+      const q = trimmedQuery === "" ? "%20" : encodeURIComponent(trimmedQuery);
+      const url = `https://api.nal.usda.gov/fdc/v1/foods/search?query=${q}&dataType=${dataTypes}&pageSize=100&api_key=${apiKey}`;
+      
+      const response = await fetch(url);
+      if (!response.ok) throw new Error("Error connecting to USDA");
+      const data = await response.json();
+
+      if (!data.foods) {
+        setResults([]);
+        return;
+      }
+
+      const enrichedResults = await Promise.all(
+        data.foods.map(async (food) => {
+          const imagenReal = await getFoodImage(food.description);
+          return { ...food, imagen: imagenReal };
+        })
+      );
+
+      cache[searchKey] = enrichedResults;
+      setResults(enrichedResults);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  return (
-    <main>
-      <h1>Search Food</h1>
-      
-      <div>
-  <input 
-    type="text" 
-    placeholder="Ej. Hummus, Apple, Rice..." 
-    value={inputValue}
-    onChange={(e) => setInputValue(e.target.value)}
-    onKeyDown={(e) => {
-
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        searchFood(inputValue);
-      }
-    }}
-  />
-
-  <button type="button" onClick={() => searchFood(inputValue)}>
-    Search
-  </button>
-</div>
-
-
-      {loading && <p>Searching food...</p>}
-      {error && <p style={{ color: "red" }}>Error: {error}</p>}
-
-
-      <ul>
-        {results.map((food) => (
-            <li key={food.id}>
-              <NavLink to={`/food/${food.id}`}>
-              <img src={food.imagen} alt={food.nombre} width="50" />
-              <strong>{food.nombre}</strong> - <em>{food.marca}</em> 
-              <span style={{ color: "green", marginLeft: "10px" }}>
-                  ({food.calorias} kcal)
-              </span>
-            </NavLink>
-            </li>
-        ))}
-      </ul>
-    </main>
-  );
+  return { results, loading, error, searchFood };
 }
