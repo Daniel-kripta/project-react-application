@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useFoodSearch } from "../../hooks/useFoodSearch";
+import { NavLink } from "react-router-dom";
 
 export default function SearchPage() {
   const [inputValue, setInputValue] = useState("");
@@ -43,11 +44,13 @@ export default function SearchPage() {
       <ul>
         {results.map((food) => (
             <li key={food.id}>
-            <img src={food.imagen} alt={food.nombre} width="50" />
-            <strong>{food.nombre}</strong> - <em>{food.marca}</em> 
-            <span style={{ color: "green", marginLeft: "10px" }}>
-                ({food.calorias} kcal)
-            </span>
+              <NavLink to={`/food/${food.id}`}>
+              <img src={food.imagen} alt={food.nombre} width="50" />
+              <strong>{food.nombre}</strong> - <em>{food.marca}</em> 
+              <span style={{ color: "green", marginLeft: "10px" }}>
+                  ({food.calorias} kcal)
+              </span>
+            </NavLink>
             </li>
         ))}
       </ul>

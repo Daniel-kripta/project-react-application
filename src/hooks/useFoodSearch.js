@@ -34,7 +34,7 @@ export function useFoodSearch() {
 
     try {
       // Foods details of USDA
-      const url = `https://api.nal.usda.gov/fdc/v1/foods/search?query=${query}&pageSize=10&api_key=${apiKey}`;
+      const url = `https://api.nal.usda.gov/fdc/v1/foods/search?query=${query}&dataType=Foundation,SR%20Legacy&pageSize=10&api_key=${apiKey}`;
       const response = await fetch(url);
 
       if (!response.ok) throw new Error("Error at connect to USDA");

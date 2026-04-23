@@ -2,7 +2,7 @@ import videoFondo from "../../assets/hero-video/hero-nutridayly.mp4";
 
 export default function Hero() {
     return (
-        <section className="hero-section" style={{ height: "400px", width: "100%", overflow: "hidden" }}>
+        <section className="hero-section">
             <video 
                 src={videoFondo} 
                 autoPlay
