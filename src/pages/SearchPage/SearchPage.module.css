@@ -1,0 +1,111 @@
+.searchControls{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 5px;
+}
+
+
+input,
+button,
+select {
+    color: var(--text-primary-color);
+    background-color: var(--extra-light-green);
+    height: 25px;
+    padding: 5px;
+    border: 1px solid var(--green);
+    border-radius: 5px;
+}
+
+button{
+    background-color: var(--light-green);
+}
+label{
+    color: var(--text-primary-color);
+    display: grid;
+    grid-template-columns: 10px 400px;
+    gap: 10px;
+    align-items: center;
+    font-size: 0.6em;
+}
+
+.filtersSection select{
+    margin-top: 10px;
+    margin-right: 10px;
+}
+
+.result-item{
+    display: grid;
+    grid-template-columns: 110px auto;
+    margin: 15px;
+    padding: 10px;
+    border-bottom: 1px solid var(--green);
+    border-top: 1px solid var(--green);
+}
+
+.result-table:nth-child(even){
+    background-color: var(--extra-light-green);
+    margin: 0;
+}
+
+.result-table:nth-child(odd){
+    background-color: white;
+    margin: 0;
+}
+
+.result-item img{
+    height: 70px;
+    width: 100px;
+}
+
+.btnsSearch{
+    display: grid;
+    grid-template-columns: 65% 30%;
+    margin-right: 15px;
+    gap: 5%;
+}
+
+.btnFav{
+    width: 60px;
+    color: var(--green);
+    font-weight: bold;
+    height: 100%;
+    display: flex;
+    font-size: 0.7em;
+    text-align: center;
+    height: 20px;
+    border: 1px solid var(--green);
+    border-radius: 5px;
+}
+
+.btnFav div{
+    display: grid;
+    align-items: center;
+}
+
+.btnFav img{
+    height: 80%;
+    width: auto;
+    margin: auto 5px;
+}
+
+.pagination{
+    text-align: center;
+}
+
+.pagination button{
+    margin: auto 5px;
+}
+
+
+
+
+
+
+/*      <div .results-container
+          <div .result-item
+              <img />
+              <h4>.food.description
+              <div .styles.foodTitle
+                  return <span key={nutName} className={styles.nutrientBadge}>{nutName}: {nut?.value} {nut?.unitName}</span>;
+                })}
+              </div>*/

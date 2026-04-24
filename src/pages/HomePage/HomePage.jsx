@@ -21,45 +21,14 @@ import {
   faTwitter,
 } from "@fortawesome/free-brands-svg-icons";
 
+import FoodResumeBar from "../../components/FoodResumeBar/FoodResumeBar";
+
 export default function HomePage() {
   const [query, setQuery] = useState("");
   const navigate = useNavigate();
 
   const { searchFood } = useFoodSearch();
   const { selectedDailyFood } = useFoodContext();
-
-  const energyNutrient = selectedDailyFood?.foodNutrients?.find(
-    (n) =>
-      n.nutrientId === 1008 ||
-      n.nutrient?.id === 1008 ||
-      n.nutrientName === "Energy" ||
-      n.nutrient?.name === "Energy",
-  );
-  const proteinNutrient = selectedDailyFood?.foodNutrients?.find(
-    (n) =>
-      n.nutrientId === 1003 ||
-      n.nutrient?.id === 1003 ||
-      n.nutrientName === "Protein",
-  );
-
-  const carbNutrient = selectedDailyFood?.foodNutrients?.find(
-    (n) =>
-      n.nutrientId === 1005 ||
-      n.nutrient?.id === 1005 ||
-      n.nutrientName === "Carbohydrate, by difference",
-  );
-
-  const fatNutrient = selectedDailyFood?.foodNutrients?.find(
-    (n) =>
-      n.nutrientId === 1004 ||
-      n.nutrient?.id === 1004 ||
-      n.nutrientName === "Total lipid (fat)",
-  );
-
-  const caloriesValue = energyNutrient?.amount ?? energyNutrient?.value ?? 0;
-  const proteinValue = proteinNutrient?.amount ?? proteinNutrient?.value ?? 0;
-  const carbsValue = carbNutrient?.amount ?? carbNutrient?.value ?? 0;
-  const fatValue = fatNutrient?.amount ?? fatNutrient?.value ?? 0;
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -149,22 +118,8 @@ export default function HomePage() {
                 {/* Nombre truncado */}
                 <h2 className="truncate-name">{selectedDailyFood.name}</h2>
 
-                {/* Línea de nutrientes */}
-                <div className="nutrients-line">
-                  <span>
-                    <strong>Cal:</strong> {caloriesValue} kcal
-                  </span>
-                  <span>
-                    <strong>Prot:</strong> {proteinValue} g
-                  </span>
-                  <span>
-                    <strong>Carb:</strong> {carbsValue} g
-                  </span>
-                  <span>
-                    <strong>Fat:</strong> {fatValue} g
-                  </span>
-                </div>
-
+                <FoodResumeBar food={selectedDailyFood} />
+                
                 <NavLink to={`/food/${selectedDailyFood.id}`}>
                   <div className="linkDetailHP">View Full Nutritional Information</div>
                 </NavLink>

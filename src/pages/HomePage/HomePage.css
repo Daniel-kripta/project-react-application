@@ -119,16 +119,6 @@
   margin-right: 5px;
 }
 
-.linkDetailHP{
-    background-color: var(--light-green);
-    padding: 5px;
-    text-align: center;
-    font-weight: bold;
-    bottom: 0;
-    margin-top: 20px;
-    border-radius: 5px;
-}
-
 .daily-grid{
     display: grid;
     height: 450px;

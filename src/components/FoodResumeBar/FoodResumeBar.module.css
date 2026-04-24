@@ -1,0 +1,12 @@
+.nutrients-line {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  margin: 10px;
+  margin-top: 10px;
+  padding-top: 8px;
+}
+
+.nutrients-line span {
+  margin-right: 5px;
+}
