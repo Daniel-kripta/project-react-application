@@ -37,7 +37,7 @@ function AppContent() {
 
 function App(){
   return(
-    <BrowserRouter>
+    <BrowserRouter basename="/project-react-application">
       <AppContent />
     </BrowserRouter>
   );
