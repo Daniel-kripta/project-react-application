@@ -1,5 +1,6 @@
 :root {
   --green: #5eaa19;
+  --light-green: #DFEFDB;
   --text-primary-color: #304030;
 }
 
@@ -20,4 +21,10 @@ a {
   text-decoration: none;
   color: inherit;
 
+}
+
+main{
+  margin: 25px auto;
+  font-size: 1.1rem;
+  color: var(--text-primary-color);
 }

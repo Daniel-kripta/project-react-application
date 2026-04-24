@@ -1,5 +1,6 @@
 import { useDailyFoods } from "../../hooks/useDailyFoods";
 import { useFoodContext } from "../../context/FoodContext";
+import "../../pages/HomePage/HomePage.css";
 
 export default function DailyFoods() {
   const { dailyFoods, loading } = useDailyFoods();
