@@ -2,17 +2,17 @@ import { useState, useMemo, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 
 import savedIcon from "../../assets/icons/saved_icon.svg";
-
 import { useFoodSearch } from "../../hooks/useFoodSearch";
 import { useFoodContext } from "../../context/FoodContext";
+import { useSavedFood } from "../../context/SavedFoodContext";
 
 import styles from "./SearchPage.module.css";
 
-import FoodResumeBar from "../../components/FoodResumeBar/FoodResumeBar";
-
-import { useSavedFood } from "../../context/SavedFoodContext";
+// Importamos la nueva tarjeta reutilizable
+import FoodCard from "../../components/FoodCard/FoodCard";
 
 export default function SearchPage() {
+  // --- TODA TU LÓGICA Y ESTADOS INTACTOS ---
   const [inputValue, setInputValue] = useState("");
   const [onlyFoundation, setOnlyFoundation] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("All");
@@ -24,9 +24,7 @@ export default function SearchPage() {
   const itemsPerPage = 8;
 
   const { searchResults, searchLoading, searchError } = useFoodContext();
-
   const { searchFood } = useFoodSearch();
-
   const { addToSaved, removeFromSaved, isSaved } = useSavedFood();
 
   useEffect(() => {
@@ -92,6 +90,8 @@ export default function SearchPage() {
     return filteredResults.slice(firstIndex, lastIndex);
   }, [filteredResults, currentPage]);
 
+  // --- FIN DE LA LÓGICA, EMPIEZA EL RENDERIZADO ---
+
   return (
     <main>
       <h1>Search Food</h1>
@@ -108,11 +108,13 @@ export default function SearchPage() {
           Search
         </button>
         <label>
-          <div><input
-            type="checkbox"
-            checked={onlyFoundation}
-            onChange={(e) => setOnlyFoundation(e.target.checked)}
-          /></div>
+          <div>
+            <input
+              type="checkbox"
+              checked={onlyFoundation}
+              onChange={(e) => setOnlyFoundation(e.target.checked)}
+            />
+          </div>
           <div>Only Foundation ℹ️</div>
         </label>
       </div>
@@ -157,18 +159,13 @@ export default function SearchPage() {
       {searchLoading && <p>Loading data...</p>}
       {searchError && <p>{searchError}</p>}
 
+      {/* AQUÍ ES DONDE PASA LA MAGIA LIMPIA DE REACT */}
       <div className={styles["results-container"]}>
         {currentItems.map((food) => (
-          <div key={food.fdcId} className={styles["result-table"]}>
-            <NavLink
-              to={`/food/${food.fdcId}`}
-              className={styles["result-item"]}
-            >
-              <img src={food.imagen} alt={food.description} />
-              <div>
-                <h4>{food.description}</h4>
-                <FoodResumeBar food={food} />
-              </div>
+          <FoodCard 
+            key={food.fdcId} 
+            food={food}
+            extraContent={
               <div className={styles.foodTitle}>
                 {activeNutrients.map((nutName) => {
                   const nut = food.foodNutrients.find(
@@ -181,25 +178,17 @@ export default function SearchPage() {
                   );
                 })}
               </div>
-              <div className={styles.btnsSearch}>
-                <div className="linkDetailHP">
-                  View Full Nutritional Information
-                </div>
-                <div 
-    className={`${styles.btnFav} ${isSaved(food.fdcId) ? styles.active : ""}`}
-    onClick={(e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      isSaved(food.fdcId) ? removeFromSaved(food.fdcId) : addToSaved(food);
-    }}
-    style={{ cursor: "pointer" }}
-  >
-    <img src={savedIcon} alt="save" /> 
-    <div>{isSaved(food.fdcId) ? "Saved" : "Save"}</div>
-  </div>
-              </div>
-            </NavLink>
-          </div>
+            }
+            actionButton={
+              <button 
+                className={`${styles.btnFav} ${isSaved(food.fdcId) ? styles.active : ""}`}
+                onClick={() => isSaved(food.fdcId) ? removeFromSaved(food.fdcId) : addToSaved(food)}
+              >
+                <img className={styles.niputocaso} src={savedIcon} alt="save" /> 
+                <div>{isSaved(food.fdcId) ? "Saved" : "Save"}</div>
+              </button>
+            }
+          />
         ))}
       </div>
 

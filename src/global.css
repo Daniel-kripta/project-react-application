@@ -29,8 +29,20 @@ main{
   color: var(--text-primary-color);
 }
 
+
+
+h1,
+h2{
+  margin-left: 20px;
+  margin-bottom: 20px;
+  text-align: center;
+  
+}
+
 .linkDetailHP{
     background-color: var(--light-green);
+    color: var(--green);
+    font-weight: bold;
     margin: 0 auto;
     padding: 5px;
     text-align: center;
@@ -38,4 +50,27 @@ main{
     font-size: 0.7em;
     bottom: 0;
     border-radius: 5px;
+}
+
+.btnDelete{
+    position: absolute;
+    right: 0;
+    bottom: 15px;
+    cursor: pointer;
+    width: 65px;
+    color: var(--green);
+    font-weight: bold;
+    height: 100%;
+    font-size: 0.7em;
+    height: 20px;
+    border: 1px solid var(--green);
+    border-radius: 5px;
+}
+
+.btnDelete span{
+  position: absolute;
+  top: 2px;
+  bottom: 0;
+  right: 0;
+  left: 0;
 }

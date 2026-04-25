@@ -10,6 +10,7 @@ import NutriCalc from "./pages/NutriCalc/NutriCalc";
 import Footer from "./components/Footer/Footer";
 import styles from './App.module.css';
 import { SavedFoodProvider } from "./context/SavedFoodContext";
+import { DishProvider } from "./context/DishContext";
 
 function AppContent() {
   const location = useLocation();
@@ -40,7 +41,9 @@ function App(){
   return(
     <BrowserRouter basename="/project-react-application">
       <SavedFoodProvider>
-        <AppContent />
+        <DishProvider>
+          <AppContent />
+        </DishProvider>
       </SavedFoodProvider>
     </BrowserRouter>
   );

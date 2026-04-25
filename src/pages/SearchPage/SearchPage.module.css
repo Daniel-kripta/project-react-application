@@ -65,13 +65,15 @@ label{
 }
 
 .btnFav{
+    cursor: pointer;
+    position: relative;
     width: 65px;
     color: var(--green);
     font-weight: bold;
     height: 100%;
     display: flex;
+    justify-content: right;
     font-size: 0.7em;
-    text-align: center;
     height: 20px;
     border: 1px solid var(--green);
     border-radius: 5px;
@@ -83,9 +85,18 @@ label{
 }
 
 .btnFav img{
-    height: 80%;
+    position: absolute;
+    left: -3px;
+    top: -1px;
+    height: 20px;
     width: auto;
     margin: auto 5px;
+}
+
+.btnFav div{
+    position: absolute;
+    top: 0;
+    bottom: 0;
 }
 
 .btnFav.active {
@@ -105,16 +116,3 @@ label{
     margin: auto 5px;
 }
 
-
-
-
-
-
-/*      <div .results-container
-          <div .result-item
-              <img />
-              <h4>.food.description
-              <div .styles.foodTitle
-                  return <span key={nutName} className={styles.nutrientBadge}>{nutName}: {nut?.value} {nut?.unitName}</span>;
-                })}
-              </div>*/
