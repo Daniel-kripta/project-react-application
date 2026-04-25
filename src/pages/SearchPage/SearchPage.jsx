@@ -10,6 +10,8 @@ import styles from "./SearchPage.module.css";
 
 import FoodResumeBar from "../../components/FoodResumeBar/FoodResumeBar";
 
+import { useSavedFood } from "../../context/SavedFoodContext";
+
 export default function SearchPage() {
   const [inputValue, setInputValue] = useState("");
   const [onlyFoundation, setOnlyFoundation] = useState(false);
@@ -24,6 +26,8 @@ export default function SearchPage() {
   const { searchResults, searchLoading, searchError } = useFoodContext();
 
   const { searchFood } = useFoodSearch();
+
+  const { addToSaved, removeFromSaved, isSaved } = useSavedFood();
 
   useEffect(() => {
     setCurrentPage(1);
@@ -181,9 +185,18 @@ export default function SearchPage() {
                 <div className="linkDetailHP">
                   View Full Nutritional Information
                 </div>
-                <div className={styles.btnFav}>
-                  <img src={savedIcon} /> <div>Save</div>
-                </div>
+                <div 
+    className={`${styles.btnFav} ${isSaved(food.fdcId) ? styles.active : ""}`}
+    onClick={(e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      isSaved(food.fdcId) ? removeFromSaved(food.fdcId) : addToSaved(food);
+    }}
+    style={{ cursor: "pointer" }}
+  >
+    <img src={savedIcon} alt="save" /> 
+    <div>{isSaved(food.fdcId) ? "Saved" : "Save"}</div>
+  </div>
               </div>
             </NavLink>
           </div>

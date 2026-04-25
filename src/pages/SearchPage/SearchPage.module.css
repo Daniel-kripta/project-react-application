@@ -65,7 +65,7 @@ label{
 }
 
 .btnFav{
-    width: 60px;
+    width: 65px;
     color: var(--green);
     font-weight: bold;
     height: 100%;
@@ -86,6 +86,15 @@ label{
     height: 80%;
     width: auto;
     margin: auto 5px;
+}
+
+.btnFav.active {
+    background-color: var(--green);
+    color: white;
+}
+
+.btnFav.active img {
+    filter: brightness(0) invert(1);
 }
 
 .pagination{

@@ -8,7 +8,8 @@ import Navbar from "./components/Navbar/Navbar";
 import Hero from "./components/Hero/Hero";
 import NutriCalc from "./pages/NutriCalc/NutriCalc";
 import Footer from "./components/Footer/Footer";
-import styles from './App.module.css'; 
+import styles from './App.module.css';
+import { SavedFoodProvider } from "./context/SavedFoodContext";
 
 function AppContent() {
   const location = useLocation();
@@ -38,9 +39,11 @@ function AppContent() {
 function App(){
   return(
     <BrowserRouter basename="/project-react-application">
-      <AppContent />
+      <SavedFoodProvider>
+        <AppContent />
+      </SavedFoodProvider>
     </BrowserRouter>
   );
-} 
+}
 
 export default App;
