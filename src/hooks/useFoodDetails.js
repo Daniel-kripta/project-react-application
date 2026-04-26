@@ -24,6 +24,35 @@ export function useFoodDetails(foodId) {
         const res = await fetch(`https://api.nal.usda.gov/fdc/v1/food/${foodId}?api_key=${apiKey}`);
         const usdaData = await res.json();
 
+        if (usdaData.foodNutrients) {
+          const hasKcal = usdaData.foodNutrients.some((nut) => {
+            const name = nut.nutrientName || nut.nutrient?.name;
+            const unit = nut.unitName || nut.nutrient?.unitName;
+            return name?.toLowerCase().includes("energy") && unit?.toLowerCase() === "kcal";
+          });
+
+          usdaData.foodNutrients = usdaData.foodNutrients.map((nut) => {
+            const name = nut.nutrientName || nut.nutrient?.name;
+            const unit = nut.unitName || nut.nutrient?.unitName;
+            const isEnergy = name?.toLowerCase().includes("energy");
+            const isKj = unit?.toLowerCase() === "kj";
+
+            if (isEnergy && isKj) {
+              if (hasKcal) return null;
+              
+              const convertedValue = (nut.value ?? nut.amount) / 4.184;
+              return {
+                ...nut,
+                value: nut.value !== undefined ? convertedValue : undefined,
+                amount: nut.amount !== undefined ? convertedValue : undefined,
+                unitName: nut.unitName ? "kcal" : undefined,
+                nutrient: nut.nutrient ? { ...nut.nutrient, unitName: "kcal" } : undefined
+              };
+            }
+            return nut;
+          }).filter(Boolean);
+        }
+
         const cleanName = usdaData.description.split(",")[0];
         const wikiRes = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(cleanName)}`);
         

@@ -40,8 +40,41 @@ export function useFoodSearch() {
 
       const enrichedResults = await Promise.all(
         data.foods.map(async (food) => {
+          
+            const hasKcal = food.foodNutrients?.some((nut) => {
+            const name = nut.nutrientName || nut.nutrient?.name;
+            const unit = nut.unitName || nut.nutrient?.unitName;
+            return name?.toLowerCase().includes("energy") && unit?.toLowerCase() === "kcal";
+          });
+
+          const cleanedNutrients = food.foodNutrients?.map((nut) => {
+            const name = nut.nutrientName || nut.nutrient?.name;
+            const unit = nut.unitName || nut.nutrient?.unitName;
+            const isEnergy = name?.toLowerCase().includes("energy");
+            const isKj = unit?.toLowerCase() === "kj";
+
+            if (isEnergy && isKj) {
+              if (hasKcal) return null; 
+              
+              const convertedValue = (nut.value ?? nut.amount) / 4.184;
+              return {
+                ...nut,
+                value: nut.value !== undefined ? convertedValue : undefined,
+                amount: nut.amount !== undefined ? convertedValue : undefined,
+                unitName: nut.unitName ? "kcal" : undefined,
+                nutrient: nut.nutrient ? { ...nut.nutrient, unitName: "kcal" } : undefined
+              };
+            }
+            return nut; 
+          }).filter(Boolean) || [];
+
           const imagenReal = await getFoodImage(food.description);
-          return { ...food, imagen: imagenReal };
+          
+          return { 
+            ...food, 
+            foodNutrients: cleanedNutrients, 
+            imagen: imagenReal 
+          };
         })
       );
 
@@ -52,7 +85,6 @@ export function useFoodSearch() {
       setSearchLoading(false);
     }
   };
-
 
   return { searchFood };
 }

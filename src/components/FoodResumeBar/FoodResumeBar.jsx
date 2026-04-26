@@ -1,19 +1,38 @@
 import styles from "./FoodResumeBar.module.css";
 
 export default function FoodResumeBar({ food }) {
-  const getNutrientValue = (names) => {
-    const nutrient = food?.foodNutrients?.find((n) => 
-      names.includes(n.nutrientName) || 
-      names.includes(n.nutrient?.name) ||
-      names.includes(n.name)
-    );
-    
-    return nutrient?.amount ?? nutrient?.value ?? 0;
+  const getNutrientValue = (names, targetUnit = null) => {
+    const nutrient = food?.foodNutrients?.find((n) => {
+      const nameMatches =
+        names.includes(n.nutrientName) ||
+        names.includes(n.nutrient?.name) ||
+        names.includes(n.name);
+
+      if (nameMatches && targetUnit) {
+        const unit = n.unitName || n.nutrient?.unitName;
+        return unit?.toLowerCase() === targetUnit.toLowerCase();
+      }
+
+      return nameMatches;
+    });
+
+    const rawValue = nutrient?.amount ?? nutrient?.value ?? 0;
+
+    return Math.round(rawValue * 100) / 100;
   };
 
-  const energy = getNutrientValue(["Energy", "Energy (kcal)", "ENERC_KCAL"]);
+  const energy = getNutrientValue(
+    ["Energy", "Energy (kcal)", "ENERC_KCAL"],
+    "kcal",
+  );
   const protein = getNutrientValue(["Protein", "PROCNT"]);
-  const carbs = getNutrientValue(["Carbohydrate, by difference", "CHOCDF", "Carbohydrates"]);
+  const carbs = getNutrientValue([
+    "Carbohydrate, by difference",
+    "Carbohydrate, by summation",
+    "Carbohydrate",
+    "Carbohydrates",
+    "CHOCDF",
+  ]);
   const fat = getNutrientValue(["Total lipid (fat)", "FAT", "Lipids"]);
 
   return (

@@ -31,7 +31,7 @@
     grid-template-columns: 2fr 1fr;
     justify-content: space-between;
     padding: 5px;
-    background-color: white;
+    background-color: var(--light-color);
 }
 
 .nutrientItem:nth-child(odd){
@@ -71,7 +71,7 @@
 @media (min-width: 480px) {
     .dishInfo{
     display: flex;
-    gao: 15px;
+    gap: 15px;
 
 }
 

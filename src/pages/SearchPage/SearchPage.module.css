@@ -48,7 +48,7 @@ label{
 }
 
 .result-table:nth-child(odd){
-    background-color: white;
+    background-color: var(--light-color);
     margin: 0;
 }
 
@@ -101,7 +101,7 @@ label{
 
 .btnFav.active {
     background-color: var(--green);
-    color: white;
+    color: var(--light-color);
 }
 
 .btnFav.active img {

@@ -1,5 +1,6 @@
 :root {
   --green: #5eaa19;
+  --light-color: #FFF;
   --light-green: #DFEFDB;
   --extra-light-green: #f1f8ef;
   --text-primary-color: #304030;
@@ -12,10 +13,13 @@
 }
 
 body {
+  background-color: var(--light-color);
+  color: var(--text-primary-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
   max-width: 1000px;
   margin: 0 auto;
   font-family: sans-serif;
-}
+  }
 
 a {
   text-decoration: none;
@@ -32,11 +36,9 @@ main{
 
 
 h1,
-h2{
-  margin-left: 20px;
-  margin-bottom: 20px;
-  text-align: center;
-  
+h2,
+h3{
+  text-align: center;  
 }
 
 .linkDetailHP{
@@ -73,4 +75,8 @@ h2{
   bottom: 0;
   right: 0;
   left: 0;
+}
+
+button{
+  cursor: pointer;
 }

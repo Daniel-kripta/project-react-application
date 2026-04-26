@@ -90,17 +90,21 @@ export default function SearchPage() {
     return filteredResults.slice(firstIndex, lastIndex);
   }, [filteredResults, currentPage]);
 
-  // --- FIN DE LA LÓGICA, EMPIEZA EL RENDERIZADO ---
 
   return (
     <main>
       <h1>Search Food</h1>
 
-      <div className={styles.searchControls}>
+<div className={styles.searchControls}>
         <input
           type="text"
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              searchFood(inputValue, onlyFoundation);
+            }
+          }}
           placeholder="Search..."
         />
 
@@ -159,7 +163,6 @@ export default function SearchPage() {
       {searchLoading && <p>Loading data...</p>}
       {searchError && <p>{searchError}</p>}
 
-      {/* AQUÍ ES DONDE PASA LA MAGIA LIMPIA DE REACT */}
       <div className={styles["results-container"]}>
         {currentItems.map((food) => (
           <FoodCard 

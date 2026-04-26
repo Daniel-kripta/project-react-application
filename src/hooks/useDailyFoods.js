@@ -36,28 +36,55 @@ export function useDailyFoods() {
 
       try {
         const today = new Date();
-        const dailySeed = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
+        let dailySeed = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
 
-        const baseId = 1100000 + (dailySeed % 8000); 
+        const pageNumber = (dailySeed % 10) + 1;
 
-        const candidateIds = [];
-        const offsets = [0, 53, 107, 311, 523]; 
-        
-        offsets.forEach(offset => {
-          const targetId = baseId + offset;
-          candidateIds.push(targetId, targetId + 1, targetId + 2, targetId + 3, targetId + 4);
-        });
-
-        const url = `https://api.nal.usda.gov/fdc/v1/foods?fdcIds=${candidateIds.join(',')}&api_key=${apiKey}`;
+        const url = `https://api.nal.usda.gov/fdc/v1/foods/search?dataType=Foundation&pageSize=50&pageNumber=${pageNumber}&api_key=${apiKey}`;
         
         const response = await fetch(url);
         const rawData = await response.json();
 
-        const validFoods = rawData.slice(0, 5);
+        const randomSeeded = () => {
+          let x = Math.sin(dailySeed++) * 10000;
+          return x - Math.floor(x);
+        };
+
+        const shuffled = [...rawData.foods].sort(() => 0.5 - randomSeeded());
+        const validFoods = shuffled.slice(0, 5);
 
         const enriched = await Promise.all(validFoods.map(async (food) => {
+          
+          // --- 🛡️ CORTAFUEGOS INTELIGENTE ---
+          const hasKcal = food.foodNutrients?.some((nut) => {
+            const name = nut.nutrientName || nut.nutrient?.name;
+            const unit = nut.unitName || nut.nutrient?.unitName;
+            return name?.toLowerCase().includes("energy") && unit?.toLowerCase() === "kcal";
+          });
+
+          const cleanedNutrients = food.foodNutrients?.map((nut) => {
+            const name = nut.nutrientName || nut.nutrient?.name;
+            const unit = nut.unitName || nut.nutrient?.unitName;
+            const isEnergy = name?.toLowerCase().includes("energy");
+            const isKj = unit?.toLowerCase() === "kj";
+
+            if (isEnergy && isKj) {
+              if (hasKcal) return null; 
+              
+              const convertedValue = (nut.value ?? nut.amount) / 4.184;
+              return {
+                ...nut,
+                value: nut.value !== undefined ? convertedValue : undefined,
+                amount: nut.amount !== undefined ? convertedValue : undefined,
+                unitName: nut.unitName ? "kcal" : undefined,
+                nutrient: nut.nutrient ? { ...nut.nutrient, unitName: "kcal" } : undefined
+              };
+            }
+            return nut; 
+          }).filter(Boolean) || [];
+
           const img = await getFoodImage(food.description);
-          return { ...food, id: food.fdcId, name: food.description, image: img };
+          return { ...food, foodNutrients: cleanedNutrients, id: food.fdcId, name: food.description, image: img };
         }));
 
         const expiry = new Date().setHours(23, 59, 59, 999);

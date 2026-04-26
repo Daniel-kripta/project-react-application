@@ -1,0 +1,107 @@
+.wikiSection{
+    padding: 15px;
+    background-color: var(--extra-light-green);
+}
+
+h2{
+    margin-top: 20px;
+}
+
+.foodSummary{
+    margin: auto 15px;
+}
+.wikiSection img{
+    width: 100%;
+    aspect-ratio: 1/0.7;
+    object-fit: cover;  
+}
+
+.textWikiSection {
+    margin-top: 30px;
+    text-align: justify;
+}
+
+.textWikiSection div{
+    padding-top: 10px;
+}
+
+.nutrientGroup{
+    border-top: 1px solid var(--green);
+    border-bottom: 1px solid var(--green);
+    margin-bottom: 15px;
+}
+
+.nutrientGroup h3{
+    margin-top: 15px;
+}
+
+.nutrientGroup tr:nth-child(even){
+    background-color: var(--extra-light-green);
+}
+
+.nutrientGroup table{
+    width: 100%;
+    padding: 15px;
+    padding-top: 0;
+}
+.nutrientGroup th{
+    text-align: left;
+    background-color: var(--light-green);
+    height: 25px;
+}
+
+.tableAmount{
+    width: 30px;
+    text-align: right;
+}
+
+.tableUnit{
+    width: 40px;
+    text-align: left;
+    padding-left: 8px;
+}
+
+.tableUnit::before{
+    content: " ";
+}
+
+@media (min-width: 480px) {
+    .foodSummary{
+        margin-top: -20px;
+        width: 50%;
+        margin-left: 25%;
+        margin-right: 25%;
+
+    }
+
+    .wikiSection{
+        display: grid;
+        grid-template-columns: 30% 68%;
+        gap: 2%;
+    }
+
+    .textWikiSection{
+        margin-top: 0;
+    }
+
+    .nutrientCards{
+        column-count: 2;
+        column-gap: 20px;
+        column-rule: 1px solid var(--green);
+    }
+
+    .nutrientGroup{
+        break-inside: avoid;
+        border-top: none;
+    }
+
+    .nutrientGroup h3{
+    margin-top: 0;
+}
+
+    .h2NutrientsList{
+        border-bottom: 1px solid var(--green);
+        padding-bottom: 10px
+    }
+
+}

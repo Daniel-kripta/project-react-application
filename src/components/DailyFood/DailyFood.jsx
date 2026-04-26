@@ -8,7 +8,6 @@ export default function DailyFoods() {
 
   if (loading) return <p>Loading...</p>;
 
-  // Filtramos el seleccionado y mostramos solo 4 en la cuadrícula de 2x2
   const otherFoods = dailyFoods
     ?.filter(food => food.id !== selectedDailyFood?.id)
     .slice(0, 4);

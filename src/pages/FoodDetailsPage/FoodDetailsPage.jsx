@@ -1,8 +1,9 @@
 import { useParams } from "react-router-dom";
-import { useFoodDetails } from "../../hooks/useFoodDetails"; // ¡Usamos tu hook!
-import styles from "./FoodDetailsPage.module.css"; // Cambiado a CSS Module
+import { useFoodDetails } from "../../hooks/useFoodDetails"; 
+import FoodResumeBar from "../../components/FoodResumeBar/FoodResumeBar";
+import styles from "./FoodDetailsPage.module.css"; 
 
-// 1. Configuramos los grupos una sola vez (como hiciste en SavedFoodPage)
+
 const NUTRIENT_GROUPS = {
   "Proteins": [
     "Protein", "Tryptophan", "Threonine", "Isoleucine", "Leucine", "Lysine", 
@@ -26,7 +27,7 @@ const NUTRIENT_GROUPS = {
 export default function FoodDetailsPage() {
   const { id } = useParams();
   
-  // 2. Consumimos tu Custom Hook (esto maneja el fetch, caché y estados)
+
   const { details: food, wikiData, loading } = useFoodDetails(id);
 
   if (loading || !food) {
@@ -37,32 +38,19 @@ export default function FoodDetailsPage() {
     );
   }
 
-  // Helper para buscar nutrientes
+ 
   const getNutrient = (name) => food.foodNutrients?.find((n) => n.nutrient.name === name);
-
-  // Nutrientes principales para el resumen
-  const calories = getNutrient("Energy");
-  const water = getNutrient("Water");
-  const fiber = getNutrient("Fiber, total dietary");
 
   return (
     <main className={styles.mainContainer}>
       <h1>{food.description}</h1>
 
-      {/* Resumen principal */}
+      
       <div className={styles.foodSummary}>
-        <span>
-          <strong>Calories:</strong> {calories?.amount || 0} {calories?.nutrient.unitName || 'kcal'}
-        </span> |
-        <span>
-          <strong>Water:</strong> {water?.amount || 0} g
-        </span> |
-        <span>
-          <strong>Fiber:</strong> {fiber?.amount || 0} g
-        </span>
+        <FoodResumeBar food={food} />
       </div>
 
-      {/* Sección de Wikipedia */}
+      
       <div className={styles.wikiSection}>
         {wikiData?.image && (
           <img
@@ -71,15 +59,18 @@ export default function FoodDetailsPage() {
             className={styles.wikiImage}
           />
         )}
+        <div className={styles.textWikiSection}>
+        <span>Food description:</span>
         {wikiData?.extract && (
           <div dangerouslySetInnerHTML={{ __html: wikiData.extract }} />
         )}
+        </div>
       </div>
-
-      {/* 3. Mapeo Dinámico de Tablas */}
+      <h2 className={styles.h2NutrientsList}>Nutrients list</h2>
+<div className={styles.nutrientCards}>
       {Object.entries(NUTRIENT_GROUPS).map(([groupName, nutrientNames]) => (
         <div key={groupName} className={styles.nutrientGroup}>
-          <h2>{groupName}</h2>
+          <h3>{groupName}</h3>
           <table className={styles.nutrientTable}>
             <thead>
               <tr>
@@ -91,20 +82,20 @@ export default function FoodDetailsPage() {
             <tbody>
               {nutrientNames.map((name) => {
                 const nutrient = getNutrient(name);
-                if (!nutrient) return null; // Si no tiene el nutriente, no pinta la fila
+                if (!nutrient) return null; 
                 
                 return (
                   <tr key={name}>
                     <td>
-                      {/* Negrita si es un macro principal */}
+                      
                       {["Protein", "Total lipid (fat)"].includes(name) ? (
                         <strong>{name}</strong>
                       ) : (
                         name
                       )}
                     </td>
-                    <td>{nutrient.amount}</td>
-                    <td>{nutrient.nutrient.unitName}</td>
+                    <td className={styles.tableAmount}>{nutrient.amount}</td>
+                    <td className={styles.tableUnit}>{nutrient.nutrient.unitName}</td>
                   </tr>
                 );
               })}
@@ -112,6 +103,7 @@ export default function FoodDetailsPage() {
           </table>
         </div>
       ))}
+      </div>
     </main>
   );
 }

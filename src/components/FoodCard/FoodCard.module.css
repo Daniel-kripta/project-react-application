@@ -9,7 +9,7 @@
 }
 
 .resultTable:nth-child(odd) {
-    background-color: white;
+    background-color: var(--light-color);
 }
 
 .resultItem {
@@ -60,7 +60,7 @@
 
 .actionBtn.active {
     background-color: var(--green);
-    color: white;
+    color: var(--light-color);
 }
 
 .actionBtn.active img {
