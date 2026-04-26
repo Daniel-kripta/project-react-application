@@ -1,6 +1,6 @@
 import { useDailyFoods } from "../../hooks/useDailyFoods";
 import { useFoodContext } from "../../context/FoodContext";
-import "../../pages/HomePage/HomePage.css";
+import styles from "./DailyFood.module.css";
 
 export default function DailyFoods() {
   const { dailyFoods, loading } = useDailyFoods();
@@ -8,14 +8,21 @@ export default function DailyFoods() {
 
   if (loading) return <p>Loading...</p>;
 
-  const otherFoods = dailyFoods.filter(food => food.id !== selectedDailyFood?.id);
+  // Filtramos el seleccionado y mostramos solo 4 en la cuadrícula de 2x2
+  const otherFoods = dailyFoods
+    ?.filter(food => food.id !== selectedDailyFood?.id)
+    .slice(0, 4);
+
+  if (!otherFoods || otherFoods.length === 0) {
+    return <p>No foods available right now.</p>;
+  }
 
   return (
-    <div className="daily-grid">
+    <div className={styles.dailyGrid}>
       {otherFoods.map((food) => (
         <div 
           key={food.id} 
-          className="small-card"
+          className={styles.smallCard}
           onClick={() => setSelectedDailyFood(food)} 
         >
           <img src={food.image} alt={food.name} />

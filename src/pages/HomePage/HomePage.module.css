@@ -1,18 +1,19 @@
-.about-header{
+
+.aboutHeader {
     text-align: justify;
     padding: 20px;
     background-color: var(--light-green);
 }
 
-.about-header h2{
+.aboutHeader h2 {
     text-align: center;
 }
 
-.about-header p {
+.aboutHeader p {
     margin-top: 20px;
 }
 
-.feature-card{
+.featureCard {
     display: flex;
     align-items: center;
     gap: 15px;
@@ -23,28 +24,28 @@
     padding: 10px;
 }
 
-.feature-card:nth-child(2){
+.featureCard:nth-child(2) {
     text-align: right;
 }
 
-.feature-card p{
+.featureCard p {
     margin-top: 10px;
     text-align: justify;
 }
 
-.feature-card form{
+.featureCard form {
     text-align: center;
     margin: 10px;
 }
 
-.feature-card input{
+.featureCard input {
     width: 70%;
     border: 1px solid var(--green);
     border-radius: 5px;
     padding: 3px;
 }
 
-.feature-card button{
+.featureCard button {
     width: 25%;
     cursor: pointer;
     background-color: var(--light-green);
@@ -54,7 +55,7 @@
     margin-left: 5px;
 }
 
-.about-icon svg{
+.aboutIcon svg {
     height: 40px;
     width: 40px;
     padding: 10px;
@@ -62,33 +63,33 @@
     border-radius: 50%;
 }
 
-.daily-food{
+.dailyFood {
     border-top: 1px solid var(--green);
     border-bottom: 1px solid var(--green);
     margin: 30px auto;
     padding: 30px 15px;
 }
 
-.main-display-dayly {
+.mainDisplayDaily {
     aspect-ratio: 1/1.2;
 }
 
-.daily-food h2{
+.dailyFood h2 {
     text-align: justify;
 }
 
-.daily-food img{
+.dailyFood img {
     object-fit: fill;
     width: 100%;
     aspect-ratio: 1/0.7;
     border-radius: 10px;
 }
 
-.daily-food-cards{
+.dailyFoodCards {
     container-type: inline-size;
 }
 
-.daily-card{
+.dailyCard {
     width: 100%;
     padding: 10px;
     border: 1px solid var(--green);
@@ -97,7 +98,7 @@
     cursor: pointer;
 }
 
-.truncate-name {
+.truncateName {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -106,7 +107,7 @@
   margin-bottom: 8px;
 }
 
-.nutrients-line {
+.nutrientsLine {
   display: flex;
   justify-content: space-between;
   font-size: 0.85rem;
@@ -115,11 +116,7 @@
   padding-top: 8px;
 }
 
-.nutrients-line span {
-  margin-right: 5px;
-}
-
-.daily-grid{
+.dailyGrid {
     display: grid;
     height: 450px;
     grid-template-columns: 1fr 1fr;
@@ -128,11 +125,11 @@
     aspect-ratio: 1/1.4;
 }
 
-.small-card{
+.smallCard {
     border-radius: 10px;
 }
 
-.shareSocialDish{
+.shareSocialDish {
     margin-top: 15px;
     padding-top: 15px;
     border-top: 10px solid var(--light-green);
@@ -143,25 +140,25 @@
     gap: 10px;
 }
 
+
 @media (min-width: 480px) {
-    .daily-food-cards{
+    .dailyFoodCards {
         display: grid;
         grid-template-columns: 60% 38%;
         gap: 2%;
     }
 
-    .daily-card{
+    .dailyCard {
         font-size: 2.15cqw;
     }
     
-    .main-display-dayly {
+    .mainDisplayDaily {
         height: 99.5%;
-    aspect-ratio: 1/1;
+        aspect-ratio: 1/1;
     }
 
-    .daily-grid{
-    height: inherit;
-    aspect-ratio: 1/1.4;
+    .dailyGrid {
+        height: inherit;
+        aspect-ratio: 1/1.4;
     }
-
 }

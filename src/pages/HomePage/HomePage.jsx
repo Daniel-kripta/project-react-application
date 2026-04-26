@@ -3,7 +3,7 @@ import { useNavigate, NavLink } from "react-router-dom";
 import { useFoodSearch } from "../../hooks/useFoodSearch";
 import { useFoodContext } from "../../context/FoodContext";
 import DailyFoods from "../../components/DailyFood/DailyFood";
-import "./HomePage.css";
+import styles from "./HomePage.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCalendarDay,
@@ -40,8 +40,8 @@ export default function HomePage() {
 
   return (
     <main>
-      <section className="about-section">
-        <header className="about-header">
+      <section className={styles.aboutSection}>
+        <header className={styles.aboutHeader}>
           <h2>Explore Your Nutrition</h2>
           <p>
             Welcome to your interactive food guide, where scientific data meets
@@ -51,9 +51,9 @@ export default function HomePage() {
           </p>
         </header>
 
-        <div className="features-container">
-          <article className="feature-card">
-            <div className="about-icon">
+        <div className={styles.featuresContainer}>
+          <article className={styles.featureCard}>
+            <div className={styles.aboutIcon}>
               <FontAwesomeIcon icon={faMagnifyingGlass} />
             </div>
             <div>
@@ -74,7 +74,7 @@ export default function HomePage() {
             </div>
           </article>
 
-          <article className="feature-card">
+          <article className={styles.featureCard}>
             <div>
               <h3>Daily Featured Foods</h3>
               <p>
@@ -83,13 +83,13 @@ export default function HomePage() {
                 your better dishes!
               </p>
             </div>
-            <div className="about-icon">
+            <div className={styles.aboutIcon}>
               <FontAwesomeIcon icon={faCalendarDay} />
             </div>
           </article>
 
-          <article className="feature-card">
-            <div className="about-icon">
+          <article className={styles.featureCard}>
+            <div className={styles.aboutIcon}>
               <FontAwesomeIcon icon={faNutritionix} />
             </div>
             <div>
@@ -104,19 +104,17 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="daily-food">
+      <section className={styles.dailyFood}>
         <h2>Here are our 5 ingredients for today!</h2>
-        <div className="daily-food-cards">
-          <div className="main-display-dayly daily-card">
+        <div className={styles.dailyFoodCards}>
+          <div className={`${styles.mainDisplayDaily} ${styles.dailyCard}`}>
             {selectedDailyFood ? (
-              <article className="featured-card">
+              <article className={styles.featuredCard}>
                 <img
                   src={selectedDailyFood.image}
                   alt={selectedDailyFood.name}
                 />
-
-                {/* Nombre truncado */}
-                <h2 className="truncate-name">{selectedDailyFood.name}</h2>
+                <h2 className={styles.truncateName}>{selectedDailyFood.name}</h2>
 
                 <FoodResumeBar food={selectedDailyFood} />
                 
@@ -128,16 +126,16 @@ export default function HomePage() {
               <p>Loading featured content...</p>
             )}
           </div>
-          <div className="other-display-dayly daily-card">
+          <div className={`${styles.otherDisplayDaily} ${styles.dailyCard}`}>
             <DailyFoods />
           </div>
         </div>
-        <div className="shareSocialDish">
+        <div className={styles.shareSocialDish}>
           <span style={{ fontWeight: `bold` }}>
-            Can you mix them up to create a fantástic dish?
+            Can you mix them up to create a fantastic dish?
           </span>
           <span>Share it with us on socials!</span>
-          <div style={{}}>
+          <div>
             <span
               style={{
                 backgroundColor: `var(--light-green)`,

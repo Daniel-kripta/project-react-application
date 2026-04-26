@@ -1,0 +1,44 @@
+.dailyGrid {
+    display: grid;
+    height: 450px;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 50% 50%;
+    gap: 5%;
+    aspect-ratio: 1/1.4;
+}
+
+.smallCard {
+    border-radius: 10px;
+    width: 100%;
+    margin: 2px;
+    cursor: pointer;
+}
+
+.smallCard img {
+    object-fit: fill;
+    width: 100%;
+    aspect-ratio: 1/0.7;
+    border-radius: 10px;
+}
+
+@media (min-width: 480px) {
+    .dailyFoodCards {
+        display: grid;
+        grid-template-columns: 60% 38%;
+        gap: 2%;
+    }
+
+    .dailyCard {
+        font-size: 2.15cqw;
+    }
+    
+    .mainDisplayDaily {
+        height: 99.5%;
+        aspect-ratio: 1/1;
+    }
+
+    .dailyGrid {
+        height: inherit;
+        aspect-ratio: 1/1.4;
+    }
+}

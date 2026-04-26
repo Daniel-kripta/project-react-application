@@ -11,6 +11,7 @@ import Footer from "./components/Footer/Footer";
 import styles from './App.module.css';
 import { SavedFoodProvider } from "./context/SavedFoodContext";
 import { DishProvider } from "./context/DishContext";
+import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary";
 
 function AppContent() {
   const location = useLocation();
@@ -39,13 +40,15 @@ function AppContent() {
 
 function App(){
   return(
-    <BrowserRouter basename="/project-react-application">
-      <SavedFoodProvider>
-        <DishProvider>
-          <AppContent />
-        </DishProvider>
-      </SavedFoodProvider>
-    </BrowserRouter>
+    <ErrorBoundary>
+      <BrowserRouter basename="/project-react-application">
+        <SavedFoodProvider>
+          <DishProvider>
+            <AppContent />
+          </DishProvider>
+        </SavedFoodProvider>
+      </BrowserRouter>
+    </ErrorBoundary>
   );
 }
 

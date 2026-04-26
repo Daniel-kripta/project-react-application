@@ -35,14 +35,27 @@ export function useDailyFoods() {
       }
 
       try {
+        const today = new Date();
+        const dailySeed = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
+
+        const baseId = 1100000 + (dailySeed % 8000); 
+
+        const candidateIds = [];
+        const offsets = [0, 53, 107, 311, 523]; 
         
-        const foodIds = [1103351, 1103935, 1100579, 1102750, 1103557]; 
-        const url = `https://api.nal.usda.gov/fdc/v1/foods?fdcIds=${foodIds.join(',')}&api_key=${apiKey}`;
+        offsets.forEach(offset => {
+          const targetId = baseId + offset;
+          candidateIds.push(targetId, targetId + 1, targetId + 2, targetId + 3, targetId + 4);
+        });
+
+        const url = `https://api.nal.usda.gov/fdc/v1/foods?fdcIds=${candidateIds.join(',')}&api_key=${apiKey}`;
         
         const response = await fetch(url);
-        const data = await response.json();
+        const rawData = await response.json();
 
-        const enriched = await Promise.all(data.map(async (food) => {
+        const validFoods = rawData.slice(0, 5);
+
+        const enriched = await Promise.all(validFoods.map(async (food) => {
           const img = await getFoodImage(food.description);
           return { ...food, id: food.fdcId, name: food.description, image: img };
         }));

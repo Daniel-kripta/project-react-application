@@ -184,7 +184,7 @@ export default function SearchPage() {
                 className={`${styles.btnFav} ${isSaved(food.fdcId) ? styles.active : ""}`}
                 onClick={() => isSaved(food.fdcId) ? removeFromSaved(food.fdcId) : addToSaved(food)}
               >
-                <img className={styles.niputocaso} src={savedIcon} alt="save" /> 
+                <img src={savedIcon} alt="save" /> 
                 <div>{isSaved(food.fdcId) ? "Saved" : "Save"}</div>
               </button>
             }
