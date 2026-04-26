@@ -37,8 +37,12 @@ function AppContent() {
 }
 
 function App(){
+
+const isGitHubPages = window.location.hostname.includes("github.io");
+  const basename = isGitHubPages ? "/project-react-application" : "/";
+
   return(
-    <BrowserRouter basename="/project-react-application">
+    <BrowserRouter basename={basename}>
        <AppContent />
     </BrowserRouter>
   );
