@@ -16,7 +16,7 @@ h2{
     justify-content: space-between;
 }
 
-.wikiSection img{
+.wikiImage{
     width: 100%;
     aspect-ratio: 1/0.7;
     object-fit: cover;  

@@ -1,104 +1,217 @@
-## Project: REACT APLICATION
-# NutriDayly
+# NutriDayly — React Application
 
-En esta quinta semana de bootcamp de IronHacks nos pidieron ejecutar un proyecto en React con requisitos determinados. En este caso, llevé a cabo el proyecto de NutriDayly.
+## Índice
 
-NutriDayly es una aplicación web SPA construida con React que permite a las personas usuarias explorar bases de datos de alimentos, analizar sus propiedades nutricionales, gestionar una lista de favoritos y construir platos personalizados calculando su valor nutricional exacto.
+- [Qué es NutriDayly](#qué-es-nutridayly)
+- [Demo y capturas](#demo-y-capturas)
+- [Quick start (instalación y ejecución)](#quick-start-instalación-y-ejecución)
+- [Variables de entorno](#variables-de-entorno)
+- [Scripts disponibles](#scripts-disponibles)
+- [Arquitectura (rutas, estado global, hooks)](#arquitectura-rutas-estado-global-hooks)
+- [APIs integradas](#apis-integradas)
+- [Testing y calidad](#testing-y-calidad)
+- [Requisitos del proyecto cumplidos (checklist)](#requisitos-del-proyecto-cumplidos-checklist)
+- [Stack tecnológico (según `package.json`)](#stack-tecnológico-según-packagejson)
+- [Características principales](#características-principales)
+- [Resumen del uso de IA (Gemini) en el desarrollo](#resumen-del-uso-de-ia-gemini-en-el-desarrollo)
+- [Complicaciones y resoluciones](#complicaciones-y-resoluciones)
+- [Tiempos empleados](#tiempos-empleados)
+- [Backlog (futuras mejoras)](#backlog-futuras-mejoras)
 
-Su funcionamiento cuenta con tres pasos. El primero de todos es un sistema de búsqueda de alimentos, que devuelve un listado con aquellos que coinciden. En esta sección se implementó una función de filtrado post-búsqueda, que permite seleccionar por nutrientes o categoría. En esta sección se posibilita el guardado de los alimentos, pasando al segundo paso.
+## Qué es NutriDayly
 
-La sección de guardados recoge todo aquellos alimentos que la persona usuaria ha guardado previamente en la sección de búsqueda. En esta sección también se guardan los platos combinados en la sección NutriCalc.
+En esta quinta semana de bootcamp de IronHacks nos pidieron ejecutar un proyecto en React con requisitos determinados. En este caso, llevé a cabo el proyecto de **NutriDayly**.
 
-El tercer paso, la sección NutriCalc, permite combinar los alimentos guardados para hacer platos completos y obtener un listado detallado de la composición nutricional. La persona usuaria puede añadir un nombre y una imagen, además de seleccionar los filtros que se guardarán con el plato. UNa vez guardado, se envía a la sección de guardados para posteriores consultas.
+NutriDayly es una aplicación web **SPA** construida con React que permite a las personas usuarias:
 
-Tanto la la primera como la segunda sección permiten el acceso a la pantalla de detalles del alimento, mostrando su composicioón nutricional y una descripción.
+- explorar bases de datos de alimentos,
+- analizar sus propiedades nutricionales,
+- gestionar una lista de favoritos,
+- construir platos personalizados calculando su composición nutricional (normalizada por 100 g en el perfil del plato).
 
-Esta aplicación web se realizó en idioma inglés ya que se quería guardar coherencia con el origen de la fuente de información, es decir, la USDA (el Departamento de Agricultura de los EEUU).
+Su funcionamiento cuenta con tres pasos:
 
-## Requisitos del Proyecto Cumplidos
+1. **Búsqueda:** devuelve un listado con alimentos que coinciden. Incluye filtrado post-búsqueda por categoría y nutrientes, y permite guardar alimentos.
+2. **Guardados:** recoge los alimentos guardados desde búsqueda y también los platos creados en NutriCalc.
+3. **NutriCalc:** combina alimentos guardados para crear platos, añadir nombre/imagen, seleccionar filtros de nutrientes que se guardan con el plato y persistir el resultado en guardados.
 
-Esta aplicación ha sido desarrollada siguiendo los requisitos técnicos:
+Tanto la primera como la segunda sección permiten acceder a la pantalla de detalles del alimento, mostrando su composición nutricional y una descripción.
 
-- **Navegación y Rutas:** Implementación de 5 rutas dinámicas con `react-router-dom`
-- **Estado Global (Context API):** Gestión de datos compartidos a través de múltiples Contextos.
-- **Hooks Personalizados:** Toda la lógica de API se ha extraído en hooks para un código limpio,
-- **Integración de APIs de Terceros:**
-  - **USDA API:** Para datos nutricionales científicos.
-  - **Pixabay API:** Para imágenes dinámicas de alimentos.
-  - **Wikipedia API:** Para resúmenes descriptivos de los alimentos.
-- **Diseño Responsivo:** UI adaptada a móvil, tablet y desktop mediante **CSS Modules** y variables CSS.
+La interfaz está en **inglés** para mantener coherencia con el origen principal de la información: la **USDA** (United States Department of Agriculture).
 
-## Stack Tecnológico
+## Demo y capturas
 
-- **React 18** (Vite)
+- **Deploy:** https://daniel-kripta.github.io/project-react-application/
+
+<img src="https://raw.githubusercontent.com/Daniel-kripta/project-react-application/refs/heads/main/src/assets/images/screenshot_page.png">
+
+<img src="https://raw.githubusercontent.com/Daniel-kripta/project-react-application/refs/heads/main/src/assets/images/screenshot_details.png">
+
+> Sugerencia para evaluación: 1 captura de Home, 1 de Search con filtros, 1 de Detail, 1 de Saved + NutriCalc.
+
+## Quick start (instalación y ejecución)
+
+1. Clona el repositorio.
+2. Instala dependencias:
+
+```bash
+npm install
+```
+
+3. Crea un archivo `.env` en la raíz (ver sección siguiente).
+4. Arranca en desarrollo:
+
+```bash
+npm run dev
+```
+
+## Variables de entorno
+
+Crea `.env` en la raíz del proyecto (no lo subas a git; debe estar ignorado).
+
+Ejemplo:
+
+```bash
+VITE_USDA_API_KEY=tu_clave
+VITE_PIXABAY_API_KEY=tu_clave
+```
+
+> Nota: el detalle nutricional puede complementarse con Wikipedia según la implementación actual del proyecto.
+
+## Scripts disponibles
+
+Según `package.json`:
+
+```bash
+npm run dev      # desarrollo (Vite)
+npm run build    # build de producción (+ copia 404 para hosting estático)
+npm run preview  # preview del build
+npm run lint     # ESLint
+npm test         # Vitest (modo watch por defecto)
+npm run test -- --run  # Vitest una sola pasada (útil en CI / entrega)
+```
+
+## Arquitectura (rutas, estado global, hooks)
+
+### Rutas (alto nivel)
+
+La app está organizada como SPA con React Router. Las rutas concretas pueden variar según tu naming, pero el flujo principal es:
+
+- Home
+- Search
+- Food detail (dinámico por id)
+- Saved items
+- NutriCalc
+- Not found (404)
+
+### Estado global (Context API)
+
+Se gestiona estado compartido mediante varios contextos (por ejemplo: búsqueda/resultados, favoritos, platos guardados). Esto permite que acciones como “guardar” en Search se reflejen en Saved y alimenten NutriCalc.
+
+### Hooks personalizados
+
+La lógica de fetching y normalización de datos se extrae a hooks para mantener componentes más legibles y reutilizar reglas (por ejemplo, limpieza de nutrientes).
+
+## APIs integradas
+
+- **USDA API:** datos nutricionales.
+- **Pixabay API:** imágenes dinámicas para cards/listados.
+- **Wikipedia API:** resumen descriptivo en detalle (cuando aplica).
+
+## Testing y calidad
+
+- Tests con **Vitest** + **Testing Library** (componentes y flujos básicos).
+- **ESLint** para consistencia y detección temprana de problemas.
+
+## Requisitos del proyecto cumplidos (checklist)
+
+Esta aplicación ha sido desarrollada siguiendo requisitos técnicos del bootcamp. Checklist explícito:
+
+- [x] **Navegación y rutas** con `react-router-dom` (SPA, rutas múltiples, 404)
+- [x] **Estado global** con **Context API** (más de un contexto consumido en varios componentes)
+- [x] **Hooks personalizados** para encapsular lógica (API / datos)
+- [x] **Integración con APIs de terceros** + manejo de estados de carga/error en flujos principales
+- [x] **CSS Modules** + variables CSS en global (reset/variables)
+- [x] **Persistencia** en `localStorage` para favoritos/platos (cuando aplica)
+- [x] **Tests** básicos (Vitest)
+
+## Stack tecnológico (según `package.json`)
+
+- **React** + **Vite**
 - **JavaScript (ES6+)**
 - **CSS Modules**
-- **React Router v6**
-- **LocalStorage API** (Persistencia de datos)
+- **React Router DOM** (versión instalada en el proyecto)
+- **Vitest** + **Testing Library**
+- **ESLint**
+- **localStorage** (persistencia)
 
-## Características Principales
+## Características principales
 
-- **Limpieza de datos en origen:** La base de datos proveniente de la API de la USDA tiene una estructura algo caótica y variante.
-- **Cálculo por porción:** La calculadora permite alternar entre ver los nutrientes totales del plato o verlos normalizados por cada 100g de masa.
-- **Persistencia:** Todos tus favoritos y platos guardados se mantienen después de cerrar el navegador.
-
+- **Limpieza de datos en origen:** la API USDA tiene estructura variable; se normaliza lo posible antes de pintar UI.
+- **Cálculo nutricional en platos:** NutriCalc combina ingredientes y presenta el perfil del plato de forma interpretable (con foco en consistencia de unidades).
+- **Persistencia:** favoritos y platos guardados sobreviven al refresco (localStorage).
 
 ## Resumen del uso de IA (Gemini) en el desarrollo
-Para desarrollar este proyecto hice uso de la IA para generar códigos para React y en la gestión de la API. En torno al 75% del código en esos dos aspectos fueron generados guiando a Gemini hacia las distintas necesidades y arquitecturas planificadas para este proyecto. Mi trabajo principal fue, por lo tanto, hacer encajar las piezas y desarrollar la idea principal. Se requirió apoyo puntual en otros aspectos, como CSS, en los que el desarrollo si fue autónomo.
 
+Para desarrollar este proyecto hice uso de la IA para generar código en React y en la gestión de integración con APIs. En torno al **75%** del código en esos dos aspectos fue generado guiando a Gemini hacia las distintas necesidades y arquitecturas planificadas para este proyecto. Mi trabajo principal en estos dos campos fue encajar piezas, integrar APIs reales, depurar datos inconsistentes, ajustar UX y asegurar que el resultado fuera coherente de extremo a extremo.
 
-## Complicaciones y Resoluciones
-La mayores complicaciones surgieron en el tratamiento de los datos obtenidos de la API de la USDA. Esto obligó en algunos casos a obtener nutrientes mediante pruebas lógicas, declaración de variables y algunos métodos.
+En el resto de campos de trabajo, el desarrollo fue mayoritariamente autónomo, con apoyo puntual cuando fue necesario.
 
-Por ejemplo, surgió un problema en como la API registraba los datos de energía, a veces con KJ, otras con Kcal, otras con ambas. Otro ejemplo, esta API aglutina varias fuentes de información, lo cual provoca que algunos alimentos muestren inconsistencias en el nombre de sus nutrientes o otros casos en los que cambian el orden en que se muestran.
+También se usó el apoyo de la IA en la investigación.
 
-Para solucionar esta incosistencia en los nombres se creó una función extractora con un array de variantes ("red de búsqueda") que garantiza encontrar el dato sin importar cómo lo nombre la API. AL respecto de la incosistencia en la forma en que se muestra la energía se implementó un filtro en los Hooks que detecta si existe el dato en kcal. Si solo existe en kJ, realiza la conversión matemática automática (dividiendo por 4.184) para normalizar toda la app a kcal.
+Por último, en el debugging, la refactorización y el alineamiento con los objetivos del ejercicio, se contó con el apoyo de Cursor desktop.
 
+## Complicaciones y resoluciones
 
-## Tiempos Empleados
+Las mayores complicaciones surgieron en el tratamiento de los datos obtenidos de la API de la USDA, lo que obligó en algunos casos a obtener nutrientes mediante lógica defensiva (búsquedas, variantes, normalización).
 
-El tiempo reflejado en esta sección hace referencia al tiempo efectivo de desarrollo. 
+Ejemplos:
 
-**Resumen del Proyecto:**
-- **Tiempo Total:** 43h 26m
+- **Energía en kJ vs kcal (y presencia duplicada):** a veces la energía aparece en kJ, otras en kcal, otras con ambas representaciones.
+- **Inconsistencias por agregación de fuentes:** la USDA aglutina fuentes distintas; puede haber variaciones en nombres de nutrientes u orden.
 
-**Desglose por Tarea:**
-| Tarea | Tiempo Efectivo | Porcentaje | Desviación |
+**Soluciones:**
+
+- Para nombres inconsistentes: enfoque tipo “red de búsqueda” con variantes para encontrar el nutriente aunque el naming cambie ligeramente.
+- Para energía: lógica en hooks que prioriza kcal cuando existe; si solo hay kJ, convierte a kcal (**÷ 4.184**) para unificar la app en kcal.
+
+## Tiempos empleados
+
+El tiempo reflejado en esta sección hace referencia al tiempo efectivo de desarrollo, en los aspectos reflejados en la tabla. Las tareas se dieron de forma simultánea, es por ello que la suma de totales y los porcentajes no son 100%.
+
+**Resumen del proyecto:**
+
+**Tiempo total:** 47h 16m
+
+**Desglose por tarea:**
+
+| Tarea | Tiempo efectivo | Porcentaje | Desviación* |
 | :--- | :--- | :--- | :--- |
-| **Frontend (Total)** | 37h 39m | 87% | +24% |
-| CSS | 13h 28m | 31% | +46% |
-| API | 9h 36m | 22% | +20% |
-| REACT | 5h 15m | 12% | +6% |
-| UI | 4h 22m | 10% | +52% |
-| Investigación | 3h 52m | 9% | +2% |
-| HTML | 3h 48m | 9% | +29% |
+| **Frontend (total)** | 37h 39m | 80% | +24% |
+| CSS | 13h 28m | 28% | +46% |
+| API | 9h 36m | 20% | +20% |
+| REACT | 5h 15m | 11% | +6% |
+| UI | 4h 22m | 9% | +52% |
+| Debugging, Refactorización... | 3h 50m | 8% | 0 |
+| Investigación | 3h 52m | 8% | +2% |
+| HTML | 3h 48m | 8% | +29% |
 | Testing & UX | 0h 39m | 1% | -13% |
-| **Tiempo Total** | **43h 26m** | **100%** | |
+| **Tiempo total** | **47h 16m** | **100%** | |
 
-**Desviación de la previsión por Tipo de Tarea**
+*La desviación fue calculada sobre la previsión de tiempo inicial en cada tarea.
 
-Frontend +24%, 
-API +20%, 
-Investigación +2%, 
-CSS +46%, 
-UI +52%, 
-HTML +29%, 
-Testing UI, UX, Reach -13%, 
-REACT +6%
+**Uso de herramientas:**
 
-**Uso de Herramientas:**
-| Herramienta | Tiempo de Uso | Porcentaje |
+| Herramienta | Tiempo de uso | Porcentaje |
 | :--- | :--- | :--- |
 | VS Codium | 30h 07m | 69% |
 | Gemini (IA) | 15h 03m | 35% |
 | Chrome (DevTools) | 4h 29m | 10% |
 
-## Backlog (Futuras Mejoras)
+Para el cálculo de los tiempos de desarrollo se hizo uso de KDevMonitor, una app de escritorio de Linux, creada con Gemini y construida a desktop con Tauri (5 horas).
 
-Las mejoras futuras a mi criterio son:
+## Backlog (futuras mejoras)
 
-- [ ] **Profundidad en la gestión de los datos nutricionales:** Se prevé seguir mejorando estos aspectos para que la aplicación sea un veradero apoyo a la gestión de la nutrición. Ejemplos de ello son: indicadores de compensación de nutrientes, gestión de filtros personalizados guardables. T
-
-- [ ] **Interactividad y accesibilidad:** Implementación de sesión de personas usuarias (posiblemente cuando aprendamos el backend) y mayor interacción con redes sociales. Además, ofrecer facilidades para la reutilización de la información, es decir, un sistema de extracción. Implementar también, funciones de accesibilidad en cuanto al contraste, el tamaño de la letra y demás aspectos. Por último, implementar la selección de idiomas para habilitarla en español.
-
-- [ ] **Mejorar las fuentes de información:** Aunque la API de USDA es la mas completa, con unos 800.000 registros, no deja de ser una API que aglutina distintas fuentes y que presentan ciertas inconsistencias. A valorar, construir una nueva base de datos no dan profunda pero mas estable.
+- [ ] **Profundidad en la gestión nutricional:** indicadores de compensación de nutrientes, filtros personalizados guardables, etc.
+- [ ] **Interactividad y accesibilidad:** sesión de usuario (cuando haya backend), mejoras de accesibilidad (contraste, tipografía, foco), export/compartir datos, e internacionalización (ES/EN).
+- [ ] **Fuentes de información:** valorar estrategias para reducir inconsistencias (capa de normalización más estricta, dataset curado, etc.).
