@@ -7,7 +7,7 @@ const getFoodImage = async (foodName) => {
     const res = await fetch(`https://pixabay.com/api/?key=${pixabayKey}&q=${query}+food&image_type=photo&per_page=3`);
     const data = await res.json();
     return data.hits?.length > 0 ? data.hits[0].webformatURL : "https://via.placeholder.com/150?text=No+Image";
-  } catch (error) {
+  } catch {
     return "https://via.placeholder.com/150?text=Error+Image";
   }
 };

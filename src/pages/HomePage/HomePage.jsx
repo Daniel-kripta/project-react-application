@@ -119,7 +119,7 @@ export default function HomePage() {
                 <FoodResumeBar food={selectedDailyFood} />
                 
                 <NavLink to={`/food/${selectedDailyFood.id}`}>
-                  <div className="linkDetailHP">View Full Nutritional Information</div>
+                  <div className={styles.linkDetailHP}>View Full Nutritional Information</div>
                 </NavLink>
               </article>
             ) : (

@@ -1,35 +1,27 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo } from "react";
 import { NavLink } from "react-router-dom";
-
-import savedIcon from "../../assets/icons/saved_icon.svg";
 import { useFoodSearch } from "../../hooks/useFoodSearch";
 import { useFoodContext } from "../../context/FoodContext";
-import { useSavedFood } from "../../context/SavedFoodContext";
 
 import styles from "./SearchPage.module.css";
-
-// Importamos la nueva tarjeta reutilizable
+import SaveButton from "../../components/SaveButton/SaveButton";
 import FoodCard from "../../components/FoodCard/FoodCard";
 
 export default function SearchPage() {
-  // --- TODA TU LÓGICA Y ESTADOS INTACTOS ---
   const [inputValue, setInputValue] = useState("");
   const [onlyFoundation, setOnlyFoundation] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [sortBy, setSortBy] = useState("");
   const [activeNutrients, setActiveNutrients] = useState([]);
   const [currentNutrient, setCurrentNutrient] = useState("");
-
   const [currentPage, setCurrentPage] = useState(1);
+  const [hasSearched, setHasSearched] = useState(false);
+
   const itemsPerPage = 8;
 
   const { searchResults, searchLoading, searchError } = useFoodContext();
   const { searchFood } = useFoodSearch();
-  const { addToSaved, removeFromSaved, isSaved } = useSavedFood();
 
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [searchResults, selectedCategory, activeNutrients]);
 
   const categories = useMemo(() => {
     const cats = searchResults.map((f) => f.foodCategory).filter(Boolean);
@@ -48,11 +40,15 @@ export default function SearchPage() {
       setActiveNutrients([...activeNutrients, currentNutrient]);
       setSortBy(currentNutrient);
       setCurrentNutrient("");
+      setCurrentPage(1);
+
     }
   };
 
   const removeNutrientFilter = (name) => {
     setActiveNutrients(activeNutrients.filter((n) => n !== name));
+    setCurrentPage(1);
+
   };
 
   const filteredResults = useMemo(() => {
@@ -90,25 +86,33 @@ export default function SearchPage() {
     return filteredResults.slice(firstIndex, lastIndex);
   }, [filteredResults, currentPage]);
 
+  const handleSearch = () => {
+    if (inputValue.trim() !== "") {
+      setHasSearched(true);
+      setCurrentPage(1);
+
+      searchFood(inputValue, onlyFoundation);
+    }
+  };
 
   return (
     <main>
       <h1>Search Food</h1>
 
-<div className={styles.searchControls}>
+      <div className={styles.searchControls}>
         <input
           type="text"
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
-              searchFood(inputValue, onlyFoundation);
+              handleSearch();
             }
           }}
           placeholder="Search..."
         />
 
-        <button onClick={() => searchFood(inputValue, onlyFoundation)}>
+        <button onClick={handleSearch}>
           Search
         </button>
         <label>
@@ -127,7 +131,10 @@ export default function SearchPage() {
         <div className={styles.filtersSection}>
           <select
             value={selectedCategory}
-            onChange={(e) => setSelectedCategory(e.target.value)}
+            onChange={(e) => {
+  setSelectedCategory(e.target.value);
+  setCurrentPage(1);
+}}
           >
             {categories.map((c) => (
               <option key={c} value={c}>
@@ -160,8 +167,28 @@ export default function SearchPage() {
         </div>
       )}
 
-      {searchLoading && <p>Loading data...</p>}
+      {searchLoading && (
+        <div className={styles["results-container"]}>
+          {[...Array(8)].map((_, index) => (
+            <div key={index} className={styles.skeletonCard}>
+              <div className={styles.skeletonImg}></div>
+              <div className={styles.skeletonContent}>
+                <div className={`${styles.skeletonText} ${styles.title}`}></div>
+                <div className={`${styles.skeletonText} ${styles.bar}`}></div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
       {searchError && <p>{searchError}</p>}
+
+      {!searchLoading && !searchError && hasSearched && searchResults.length === 0 && (
+        <p className={styles.noResultsMsg}>No results found. Try a different search term.</p>
+      )}
+
+      {!searchLoading && !searchError && searchResults.length > 0 && filteredResults.length === 0 && (
+        <p className={styles.noResultsMsg}>No items match the selected filters.</p>
+      )}
 
       <div className={styles["results-container"]}>
         {currentItems.map((food) => (
@@ -182,15 +209,7 @@ export default function SearchPage() {
                 })}
               </div>
             }
-            actionButton={
-              <button 
-                className={`${styles.btnFav} ${isSaved(food.fdcId) ? styles.active : ""}`}
-                onClick={() => isSaved(food.fdcId) ? removeFromSaved(food.fdcId) : addToSaved(food)}
-              >
-                <img src={savedIcon} alt="save" /> 
-                <div>{isSaved(food.fdcId) ? "Saved" : "Save"}</div>
-              </button>
-            }
+            actionButton={<SaveButton food={food} />}
           />
         ))}
       </div>

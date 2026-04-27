@@ -16,7 +16,7 @@ const getFoodImage = async (foodName) => {
 export function useDailyFoods() {
   const [dailyFoods, setDailyFoods] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { setSelectedDailyFood, selectedDailyFood } = useFoodContext();
+  const { setSelectedDailyFood } = useFoodContext();
 
   useEffect(() => {
     const fetchDaily = async () => {
@@ -28,7 +28,7 @@ export function useDailyFoods() {
         const parsed = JSON.parse(cachedData);
         if (now < parsed.expiry) {
           setDailyFoods(parsed.data);
-          if (!selectedDailyFood) setSelectedDailyFood(parsed.data[0]);
+          setSelectedDailyFood((prev) => prev || parsed.data[0]);
           setLoading(false);
           return;
         }
@@ -91,7 +91,7 @@ export function useDailyFoods() {
         localStorage.setItem("daily_foods", JSON.stringify({ data: enriched, expiry }));
 
         setDailyFoods(enriched);
-        setSelectedDailyFood(enriched[0]);
+        setSelectedDailyFood((prev) => prev || enriched[0]);
       } catch (error) {
         console.error("Error fetching daily foods:", error);
       } finally {
@@ -100,7 +100,7 @@ export function useDailyFoods() {
     };
 
     fetchDaily();
-  }, []);
+  }, [setSelectedDailyFood]);
 
   return { dailyFoods, loading };
 }

@@ -67,3 +67,15 @@
     filter: brightness(0) invert(1);
 }
 
+.linkDetailHP{
+    background-color: var(--light-green);
+    color: var(--green);
+    font-weight: bold;
+    margin: 0 auto;
+    padding: 5px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 0.7em;
+    bottom: 0;
+    border-radius: 5px;
+}

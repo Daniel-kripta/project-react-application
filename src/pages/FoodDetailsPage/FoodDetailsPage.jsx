@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import { useFoodDetails } from "../../hooks/useFoodDetails"; 
 import FoodResumeBar from "../../components/FoodResumeBar/FoodResumeBar";
 import styles from "./FoodDetailsPage.module.css"; 
+import SaveButton from "../../components/SaveButton/SaveButton";
 
 
 const NUTRIENT_GROUPS = {
@@ -60,7 +61,7 @@ export default function FoodDetailsPage() {
           />
         )}
         <div className={styles.textWikiSection}>
-        <span>Food description:</span>
+        <div className={styles.titleSave}><span>Food description:</span><SaveButton food={food} /></div>
         {wikiData?.extract && (
           <div dangerouslySetInnerHTML={{ __html: wikiData.extract }} />
         )}

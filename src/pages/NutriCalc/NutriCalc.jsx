@@ -6,6 +6,15 @@ import styles from "./NutriCalc.module.css";
 import defaultDishImg from "../../assets/images/defaultDishes.png";
 
 export default function NutriCalc() {
+  const buildDishId = (name, ingredients) => {
+    const safeName = name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+    const ingredientKey = ingredients
+      .map((item) => item.fdcId)
+      .sort((a, b) => a - b)
+      .join("-");
+    return `${safeName || "dish"}-${ingredientKey || "empty"}`;
+  };
+
   const { savedFoods } = useSavedFood();
   const { saveDish } = useDish();
 
@@ -88,7 +97,7 @@ export default function NutriCalc() {
     if (!trimmedName || currentDishIngredients.length === 0) return;
 
   
-    const dishIdToSave = currentDishId || Date.now().toString();
+    const dishIdToSave = currentDishId || buildDishId(trimmedName, currentDishIngredients);
 
     const newDish = {
       id: dishIdToSave,
@@ -126,7 +135,7 @@ export default function NutriCalc() {
   };
 
 
-const calculatedNutrients = useMemo(() => {
+  const calculatedNutrients = (() => {
     const totals = {};
     let totalDishWeight = 0;
 
@@ -157,7 +166,7 @@ const calculatedNutrients = useMemo(() => {
     return nutrientsPer100g
       .filter((nut) => nut.value > 0)
       .sort((a, b) => b.value - a.value);
-  }, [currentDishIngredients]);
+  })();
 
 
   const availableNutrientsForFilter = useMemo(() => {
@@ -197,7 +206,7 @@ const calculatedNutrients = useMemo(() => {
             We see you don't have any saved ingredients yet. Go to the Search
             Page to find your favorites!
           </p>
-          <NavLink to="/search" className={styles.searchLinkBtn}>
+          <NavLink to="/search" className={styles.btnLinkEmpty}>
             Go to Search Page
           </NavLink>
         </section>

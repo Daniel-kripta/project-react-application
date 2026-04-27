@@ -3,18 +3,15 @@ import { useState, useEffect } from "react";
 const detailsCache = {};
 
 export function useFoodDetails(foodId) {
-  const [details, setDetails] = useState(null);
+  const cachedEntry = foodId ? detailsCache[foodId] : null;
+const [details, setDetails] = useState(cachedEntry?.usda ?? null);
   const [loading, setLoading] = useState(false);
-  const [wikiData, setWikiData] = useState(null);
+const [wikiData, setWikiData] = useState(cachedEntry?.wiki ?? null);
 
   useEffect(() => {
     if (!foodId) return;
 
-    if (detailsCache[foodId]) {
-      setDetails(detailsCache[foodId].usda);
-      setWikiData(detailsCache[foodId].wiki);
-      return;
-    }
+if (!foodId || cachedEntry) return;
 
     const fetchDetails = async () => {
       setLoading(true);
@@ -78,7 +75,7 @@ export function useFoodDetails(foodId) {
     };
 
     fetchDetails();
-  }, [foodId]);
+ }, [foodId, cachedEntry]);
 
   return { details, wikiData, loading };
 }

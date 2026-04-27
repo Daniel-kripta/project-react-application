@@ -68,6 +68,53 @@
     margin-top: -10px;
 }
 
+.btnLinkEmpty{
+    padding: 5px;
+    right: 0;
+    bottom: 15px;
+    cursor: pointer;
+    width: 65px;
+    color: var(--green);
+    font-weight: bold;
+    height: 100%;
+    font-size: 0.7em;
+    height: 20px;
+    border: 1px solid var(--green);
+    border-radius: 5px;
+
+}
+
+.btnDelete{
+    position: absolute;
+    right: 0;
+    bottom: 15px;
+    cursor: pointer;
+    width: 65px;
+    color: var(--green);
+    font-weight: bold;
+    height: 100%;
+    font-size: 0.7em;
+    height: 20px;
+    border: 1px solid var(--green);
+    border-radius: 5px;
+}
+
+.btnDelete span{
+  position: absolute;
+  top: 2px;
+  bottom: 0;
+  right: 0;
+  left: 0;
+}
+
+.globalEmptyState{
+    text-align: center;
+}
+
+.partialEmptyState{
+    text-align: center;
+}
+
 @media (min-width: 480px) {
     .dishInfo{
     display: flex;

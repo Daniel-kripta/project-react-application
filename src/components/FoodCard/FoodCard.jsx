@@ -21,7 +21,7 @@ export default function FoodCard({ food, extraContent, actionButton }) {
         )}
         
         <div className={styles.btnsSearch}>
-          <div className="linkDetailHP">
+          <div className={styles.linkDetailHP}>
             View Full Nutritional Information
           </div>
           

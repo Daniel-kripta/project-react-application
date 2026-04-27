@@ -1,0 +1,37 @@
+.btnFav {
+    cursor: pointer;
+    position: relative;
+    width: 70px;
+    color: var(--green);
+    font-weight: bold;
+    height: 20px;
+    display: flex;
+    justify-content: right;
+    font-size: 0.7em;
+    border: 1px solid var(--green);
+    border-radius: 5px;
+    background-color: var(--light-green);
+}
+
+.btnFav span {
+    position: absolute;
+    bottom: 2px;
+}
+
+.btnFav img {
+    position: absolute;
+    left: -3px;
+    top: 1px;
+    height: 15px;
+    width: auto;
+    margin: auto 5px;
+}
+
+.btnFav.active {
+    background-color: var(--green);
+    color: var(--light-green);
+}
+
+.btnFav.active img {
+    filter: brightness(0) invert(1);
+}

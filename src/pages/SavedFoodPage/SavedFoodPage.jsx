@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { NavLink } from "react-router-dom";
 import { useSavedFood } from "../../context/SavedFoodContext";
 import { useDish } from "../../context/DishContext";
 import FoodResumeBar from "../../components/FoodResumeBar/FoodResumeBar";
@@ -6,7 +7,6 @@ import styles from "./SavedFoodPage.module.css";
 import defaultDishImg from "../../assets/images/defaultDishes.png";
 import FoodCard from "../../components/FoodCard/FoodCard";
 
-// --- CONFIGURACIÓN DE GRUPOS NUTRICIONALES ---
 const TOP_PRIORITY = ["Energy", "Protein", "Carbohydrate, by difference", "Total lipid (fat)", "Water"];
 
 const GROUPS = {
@@ -33,15 +33,11 @@ const GROUPS = {
   ]
 };
 
-// --- SUB-COMPONENTE TARJETA DE PLATO ---
 function DishCard({ dish, onDelete }) {
   const [isExpanded, setIsExpanded] = useState(false);
   const hasFilters = dish.activeFilters && dish.activeFilters.length > 0;
-
-  // 1. Calculamos la masa total del plato sumando las cantidades de los ingredientes
   const totalMass = dish.ingredients.reduce((acc, item) => acc + (Number(item.quantity) || 0), 0);
 
-  // Renderizador Inteligente
   const renderNutrientList = (nutrients, sortByAlpha = true) => {
     const listToRender = sortByAlpha 
       ? [...nutrients].sort((a, b) => a.name.localeCompare(b.name))
@@ -50,7 +46,6 @@ function DishCard({ dish, onDelete }) {
     return (
       <div className={styles.nutrientList}>
         {listToRender.map(n => {
-          // 2. Calculamos el valor por cada 100g usando la regla de tres
           const valuePer100g = totalMass > 0 ? (n.value / totalMass) * 100 : 0;
 
           return (
@@ -80,7 +75,6 @@ function DishCard({ dish, onDelete }) {
         <div className={styles.dishHeader}>
           <h3>{dish.name}</h3>
           
-          {/* NUEVO: Lista de ingredientes renderizada entre el título y el botón */}
           <div className={styles.dishIngredientsBox}>
             <strong>Ingredients:</strong>
             <ul>
@@ -92,7 +86,7 @@ function DishCard({ dish, onDelete }) {
             </ul>
           </div>
 
-          <button className="btnDelete" onClick={() => onDelete(dish.id)}><span>Delete</span></button>
+          <button className={styles.btnDelete} onClick={() => onDelete(dish.id)}><span>Delete</span></button>
         </div>
       </div>
 
@@ -143,52 +137,75 @@ function DishCard({ dish, onDelete }) {
   );
 }
 
-// --- COMPONENTE PRINCIPAL ---
 export default function SavedFoodPage() {
   const { savedFoods, removeFromSaved } = useSavedFood();
   const { savedDishes, deleteDish } = useDish();
+
+  const isCompletelyEmpty = savedFoods.length === 0 && savedDishes.length === 0;
 
   return (
     <main className={styles.savedPage}>
       <h1>Saved Food</h1>
 
-      <section className={styles.infoPanel}>
-        <span>Resume:</span>
-        <div className={styles.statCard}><h3>Saved Ingredients</h3><p>{savedFoods.length}</p></div>
-        <div className={styles.statCard}><h3>Custom Dishes</h3><p>{savedDishes.length}</p></div>
-      </section>
+      {isCompletelyEmpty ? (
+        <section className={styles.globalEmptyState}>
+          <h2>Your pantry is completely empty!</h2>
+          <p>You haven't saved any ingredients or created any custom dishes yet.</p>
+          <div className={styles.emptyStateActions}>
+            <NavLink to="/search" className={styles.btnLinkEmpty}>Go find ingredients</NavLink>
+          </div>
+        </section>
+      ) : (
+        <>
+          <section className={styles.infoPanel}>
+            <span>Resume:</span>
+            <div className={styles.statCard}><h3>Saved Ingredients</h3><p>{savedFoods.length}</p></div>
+            <div className={styles.statCard}><h3>Custom Dishes</h3><p>{savedDishes.length}</p></div>
+          </section>
 
-      <section className={styles.dishesSection}>
-        <h2>My Custom Dishes</h2>
-        <div className={styles.dishesGrid}>
-          {savedDishes.length > 0 ? (
-            savedDishes.map(dish => <DishCard key={dish.id} dish={dish} onDelete={deleteDish} />)
-          ) : (
-            <p>No dishes saved. Build one in the NutriCalc!</p>
-          )}
-        </div>
-      </section>
+          <section className={styles.dishesSection}>
+            <h2>My Custom Dishes</h2>
+            {savedDishes.length > 0 ? (
+              <div className={styles.dishesGrid}>
+                {savedDishes.map(dish => <DishCard key={dish.id} dish={dish} onDelete={deleteDish} />)}
+              </div>
+            ) : (
+              <div className={styles.partialEmptyState}>
+                <p>No dishes saved yet. Mix your ingredients in the calculator!</p>
+                <NavLink to="/nutricalc" className={styles.btnLinkEmpty}>Open NutriCalc</NavLink>
+              </div>
+            )}
+          </section>
 
-      <section className={styles.foodList}>
-        <h2>Raw Ingredients</h2>
-        <div className={styles.ingredientsGrid}>
-          {savedFoods.map(food => (
-            <FoodCard 
-              key={food.fdcId} 
-              food={food}
-              extraContent={ <div></div> }
-              actionButton={
-                <button 
-                  className="btnDelete" 
-                  onClick={() => removeFromSaved(food.fdcId)}
-                >
-                  <span>Delete</span>
-                </button>
-              }
-            />
-          ))}
-        </div>
-      </section>
+          <section className={styles.foodList}>
+            <h2>Raw Ingredients</h2>
+            {savedFoods.length > 0 ? (
+              <div className={styles.ingredientsGrid}>
+                {savedFoods.map(food => (
+                  <FoodCard 
+                    key={food.fdcId} 
+                    food={food}
+                    extraContent={ <div></div> }
+                    actionButton={
+                      <button 
+                        className={styles.btnDelete} 
+                        onClick={() => removeFromSaved(food.fdcId)}
+                      >
+                        <span>Delete</span>
+                      </button>
+                    }
+                  />
+                ))}
+              </div>
+            ) : (
+              <div className={styles.partialEmptyState}>
+                <p>No raw ingredients saved.</p>
+                <NavLink to="/search" className={styles.btnLinkEmpty}>Search ingredients</NavLink>
+              </div>
+            )}
+          </section>
+        </>
+      )}
     </main>
   );
 }
