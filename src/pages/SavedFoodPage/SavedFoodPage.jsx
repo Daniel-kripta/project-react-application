@@ -45,16 +45,14 @@ const renderNutrientList = (nutrients, sortByAlpha = true) => {
 
     return (
       <div className={styles.nutrientList}>
-        {listToRender.map(n => {
-          return (
-            <div key={n.name} className={styles.nutrientItem}>
-              <span>{n.name}: </span>
-              <span className={styles.nutrientValue}>
-                {n.value.toFixed(1)} {n.unit}
-              </span>
-            </div>
-          );
-        })}
+        {listToRender.map(n => (
+          <div key={n.name} className={styles.nutrientItem}>
+            <span>{n.name}: </span>
+            <span className={styles.nutrientValue}>
+              {Number(n.value).toFixed(1)} {n.unit}
+            </span>
+          </div>
+        ))}
       </div>
     );
   };
