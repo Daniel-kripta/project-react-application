@@ -1,105 +1,102 @@
-.infoPanel{
-    display: flex;
-    gap: 10px;
-    text-align: center;
-    padding: 15px;
-    background-color: var(--light-green);
-    margin-top: 15px;
-    margin-bottom: 30px;
+.infoPanel {
+  display: flex;
+  gap: 10px;
+  text-align: center;
+  padding: 15px;
+  background-color: var(--light-green);
+  margin-top: 15px;
+  margin-bottom: 30px;
 }
 
-.dishCard{
-    border-top: 1px solid var(--green);
-    border-bottom: 1px solid var(--green);
-    padding: 15px;
-    margin-top: 10px;
-    margin-bottom: 40px;
+.dishCard {
+  border-top: 1px solid var(--green);
+  border-bottom: 1px solid var(--green);
+  padding: 15px;
+  margin-top: 10px;
+  margin-bottom: 40px;
 }
 
-.dishHeader{
-    display: grid;
-    grid-template-rows: 30px 100px 50px;
+.dishHeader {
+  display: grid;
+  grid-template-rows: 30px 100px 50px;
 }
 
-.dishCard:nth-child(odd){
-    background-color: var(--extra-light-green);
+.dishCard:nth-child(odd) {
+  background-color: var(--extra-light-green);
 }
 
-
-.nutrientItem{
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    justify-content: space-between;
-    padding: 5px;
-    background-color: var(--light-color);
+.nutrientItem {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  justify-content: space-between;
+  padding: 5px;
+  background-color: var(--light-color);
 }
 
-.nutrientItem:nth-child(odd){
-    background-color: var(--extra-light-green);
-
+.nutrientItem:nth-child(odd) {
+  background-color: var(--extra-light-green);
 }
 
-.nutrientValue{
-    text-align: right;
+.nutrientValue {
+  text-align: right;
 }
 
-.dishImageWrapper img{
-    width: 100%;
-    aspect-ratio: 1/0.7;
-    padding: 10px;
+.dishImageWrapper img {
+  width: 100%;
+  aspect-ratio: 1/0.7;
+  padding: 10px;
 }
 
-.groupedView{
-    width: 100%;
-    display: grid;
+.groupedView {
+  width: 100%;
+  display: grid;
 }
 
-.groupedView button{
-    color: var(--green);
-    font-weight: bold;
+.groupedView button {
+  color: var(--green);
+  font-weight: bold;
 }
 
-.contentArea h4{
-    background-color: var(--light-green);
-    margin-top: 10px;
+.contentArea h4 {
+  background-color: var(--light-green);
+  margin-top: 10px;
 }
 
-.contentArea h4:first-child{
-    margin-top: -10px;
+.contentArea h4:first-child {
+  margin-top: -10px;
 }
 
-.btnLinkEmpty{
-    padding: 5px;
-    right: 0;
-    bottom: 15px;
-    cursor: pointer;
-    width: 65px;
-    color: var(--green);
-    font-weight: bold;
-    height: 100%;
-    font-size: 0.7em;
-    height: 20px;
-    border: 1px solid var(--green);
-    border-radius: 5px;
-
+.btnLinkEmpty {
+  padding: 5px;
+  right: 0;
+  bottom: 15px;
+  cursor: pointer;
+  width: 65px;
+  color: var(--green);
+  font-weight: bold;
+  height: 100%;
+  font-size: 0.7em;
+  height: 20px;
+  border: 1px solid var(--green);
+  border-radius: 5px;
 }
 
-.btnDelete{
-    position: absolute;
-    right: 0;
-    bottom: 15px;
-    cursor: pointer;
-    width: 65px;
-    color: var(--green);
-    font-weight: bold;
-    height: 100%;
-    font-size: 0.7em;
-    height: 20px;
-    border: 1px solid var(--green);
-    border-radius: 5px;
+.btnDelete {
+  position: absolute;
+  right: 0;
+  bottom: 15px;
+  cursor: pointer;
+  width: 65px;
+  color: var(--green);
+  font-weight: bold;
+  height: 100%;
+  font-size: 0.7em;
+  height: 20px;
+  border: 1px solid var(--green);
+  border-radius: 5px;
 }
 
-.btnDelete span{
+.btnDelete span {
   position: absolute;
   top: 2px;
   bottom: 0;
@@ -107,32 +104,29 @@
   left: 0;
 }
 
-.globalEmptyState{
-    text-align: center;
+.globalEmptyState {
+  text-align: center;
 }
 
-.partialEmptyState{
-    text-align: center;
+.partialEmptyState {
+  text-align: center;
 }
 
 @media (min-width: 480px) {
-    .dishInfo{
+  .dishInfo {
     display: flex;
     gap: 15px;
+  }
 
-}
+  .dishHeader {
+    position: relative;
+    width: 100%;
+  }
 
-    .dishHeader{
-        position: relative;
-        width: 100%;
-    }
-
-.dishImageWrapper img{
+  .dishImageWrapper img {
     height: 150px;
     width: 214px;
     padding: 10px;
     padding-top: 0;
-}
-
-
+  }
 }

@@ -1,7 +1,6 @@
-// App.jsx
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom"
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import HomePage from "./pages/HomePage/HomePage";
-import SearchPage from "./pages/SearchPage/SearchPage"
+import SearchPage from "./pages/SearchPage/SearchPage";
 import FoodDetailsPage from "./pages/FoodDetailsPage/FoodDetailsPage";
 import SavedFoodPage from "./pages/SavedFoodPage/SavedFoodPage";
 import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
@@ -9,7 +8,7 @@ import Navbar from "./components/Navbar/Navbar";
 import Hero from "./components/Hero/Hero";
 import NutriCalc from "./pages/NutriCalc/NutriCalc";
 import Footer from "./components/Footer/Footer";
-import styles from './App.module.css';
+import styles from "./App.module.css";
 
 function AppContent() {
   const location = useLocation();
@@ -18,6 +17,7 @@ function AppContent() {
   return (
     <div className={styles.appContainer}>
       <div className={styles.mainContent}>
+        {/* El Hero solo se muestra en la página de inicio */}
         {isHomePage && <Hero />}
         <Navbar />
 
@@ -36,14 +36,14 @@ function AppContent() {
   );
 }
 
-function App(){
-
-const isGitHubPages = window.location.hostname.includes("github.io");
+function App() {
+  // En GitHub Pages la URL incluye el nombre del repositorio como prefijo, hay que indicárselo al router
+  const isGitHubPages = window.location.hostname.includes("github.io");
   const basename = isGitHubPages ? "/project-react-application" : "/";
 
-  return(
+  return (
     <BrowserRouter basename={basename}>
-       <AppContent />
+      <AppContent />
     </BrowserRouter>
   );
 }

@@ -114,12 +114,16 @@ export default function HomePage() {
                   src={selectedDailyFood.image}
                   alt={selectedDailyFood.name}
                 />
-                <h2 className={styles.truncateName}>{selectedDailyFood.name}</h2>
+                <h2 className={styles.truncateName}>
+                  {selectedDailyFood.name}
+                </h2>
 
                 <FoodResumeBar food={selectedDailyFood} />
-                
+
                 <NavLink to={`/food/${selectedDailyFood.id}`}>
-                  <div className={styles.linkDetailHP}>View Full Nutritional Information</div>
+                  <div className={styles.linkDetailHP}>
+                    View Full Nutritional Information
+                  </div>
                 </NavLink>
               </article>
             ) : (

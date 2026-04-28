@@ -14,7 +14,7 @@ describe("SaveButton integration with SavedFoodContext", () => {
     render(
       <SavedFoodProvider>
         <SaveButton food={mockFood} />
-      </SavedFoodProvider>
+      </SavedFoodProvider>,
     );
 
     const saveButton = screen.getByRole("button", { name: /save/i });

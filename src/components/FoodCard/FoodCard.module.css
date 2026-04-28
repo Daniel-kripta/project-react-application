@@ -1,81 +1,81 @@
 .resultTable {
-    border-bottom: 1px solid var(--green);
-    border-top: 1px solid var(--green);
-    margin: 0;
+  border-bottom: 1px solid var(--green);
+  border-top: 1px solid var(--green);
+  margin: 0;
 }
 
 .resultTable:nth-child(even) {
-    background-color: var(--extra-light-green);
+  background-color: var(--extra-light-green);
 }
 
 .resultTable:nth-child(odd) {
-    background-color: var(--light-color);
+  background-color: var(--light-color);
 }
 
 .resultItem {
-    display: grid;
-    position: relative;
-    grid-template-columns: 110px auto;
-    margin: 15px;
-    padding: 10px;
-    text-decoration: none;
-    color: inherit;
+  display: grid;
+  position: relative;
+  grid-template-columns: 110px auto;
+  margin: 15px;
+  padding: 10px;
+  text-decoration: none;
+  color: inherit;
 }
 
 .foodThumbnail {
-    height: 70px;
-    width: 100px;
-    object-fit: cover;
-    border-radius: 4px;
+  height: 70px;
+  width: 100px;
+  object-fit: cover;
+  border-radius: 4px;
 }
 
 .btnsSearch {
-    display: grid;
-    grid-template-columns: 65% 30%;
-    margin-right: 15px;
-    gap: 5%;
-    align-items: center;
+  display: grid;
+  grid-template-columns: 65% 30%;
+  margin-right: 15px;
+  gap: 5%;
+  align-items: center;
 }
 
 .actionBtn {
-    width: 100%;
-    height: 25px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 0.7em;
-    font-weight: bold;
-    border: 1px solid var(--green);
-    border-radius: 5px;
-    cursor: pointer ;
-    background-color: transparent;
-    color: var(--green);
+  width: 100%;
+  height: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.7em;
+  font-weight: bold;
+  border: 1px solid var(--green);
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: transparent;
+  color: var(--green);
 }
 
 .actionBtn img {
-    height: 14px;
-    width: auto;
-    margin-right: 5px;
+  height: 14px;
+  width: auto;
+  margin-right: 5px;
 }
 
 .actionBtn.active {
-    background-color: var(--green);
-    color: var(--light-color);
+  background-color: var(--green);
+  color: var(--light-color);
 }
 
 .actionBtn.active img {
-    filter: brightness(0) invert(1);
+  filter: brightness(0) invert(1);
 }
 
-.linkDetailHP{
-    background-color: var(--light-green);
-    color: var(--green);
-    font-weight: bold;
-    margin: 0 auto;
-    padding: 5px;
-    text-align: center;
-    font-weight: bold;
-    font-size: 0.7em;
-    bottom: 0;
-    border-radius: 5px;
+.linkDetailHP {
+  background-color: var(--light-green);
+  color: var(--green);
+  font-weight: bold;
+  margin: 0 auto;
+  padding: 5px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 0.7em;
+  bottom: 0;
+  border-radius: 5px;
 }

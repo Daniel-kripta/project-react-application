@@ -1,5 +1,4 @@
 import { useState, useMemo } from "react";
-import { NavLink } from "react-router-dom";
 import { useFoodSearch } from "../../hooks/useFoodSearch";
 import { useFoodContext } from "../../context/FoodContext";
 
@@ -22,12 +21,13 @@ export default function SearchPage() {
   const { searchResults, searchLoading, searchError } = useFoodContext();
   const { searchFood } = useFoodSearch();
 
-
+  // Categorías únicas extraídas de los resultados para el filtro de categoría
   const categories = useMemo(() => {
     const cats = searchResults.map((f) => f.foodCategory).filter(Boolean);
     return ["All", ...new Set(cats)];
   }, [searchResults]);
 
+  // Lista de nutrientes disponibles para añadir como filtro
   const availableNutrients = useMemo(() => {
     const allNutrients = searchResults.flatMap((f) =>
       f.foodNutrients.map((n) => n.nutrientName),
@@ -41,14 +41,12 @@ export default function SearchPage() {
       setSortBy(currentNutrient);
       setCurrentNutrient("");
       setCurrentPage(1);
-
     }
   };
 
   const removeNutrientFilter = (name) => {
     setActiveNutrients(activeNutrients.filter((n) => n !== name));
     setCurrentPage(1);
-
   };
 
   const filteredResults = useMemo(() => {
@@ -79,6 +77,7 @@ export default function SearchPage() {
     return filtered;
   }, [searchResults, selectedCategory, activeNutrients, sortBy]);
 
+  // Paginación: se calcula qué slice de resultados mostrar según la página actual
   const totalPages = Math.ceil(filteredResults.length / itemsPerPage);
   const currentItems = useMemo(() => {
     const lastIndex = currentPage * itemsPerPage;
@@ -112,9 +111,7 @@ export default function SearchPage() {
           placeholder="Search..."
         />
 
-        <button onClick={handleSearch}>
-          Search
-        </button>
+        <button onClick={handleSearch}>Search</button>
         <label>
           <div>
             <input
@@ -132,9 +129,9 @@ export default function SearchPage() {
           <select
             value={selectedCategory}
             onChange={(e) => {
-  setSelectedCategory(e.target.value);
-  setCurrentPage(1);
-}}
+              setSelectedCategory(e.target.value);
+              setCurrentPage(1);
+            }}
           >
             {categories.map((c) => (
               <option key={c} value={c}>
@@ -182,18 +179,28 @@ export default function SearchPage() {
       )}
       {searchError && <p>{searchError}</p>}
 
-      {!searchLoading && !searchError && hasSearched && searchResults.length === 0 && (
-        <p className={styles.noResultsMsg}>No results found. Try a different search term.</p>
-      )}
+      {!searchLoading &&
+        !searchError &&
+        hasSearched &&
+        searchResults.length === 0 && (
+          <p className={styles.noResultsMsg}>
+            No results found. Try a different search term.
+          </p>
+        )}
 
-      {!searchLoading && !searchError && searchResults.length > 0 && filteredResults.length === 0 && (
-        <p className={styles.noResultsMsg}>No items match the selected filters.</p>
-      )}
+      {!searchLoading &&
+        !searchError &&
+        searchResults.length > 0 &&
+        filteredResults.length === 0 && (
+          <p className={styles.noResultsMsg}>
+            No items match the selected filters.
+          </p>
+        )}
 
       <div className={styles["results-container"]}>
         {currentItems.map((food) => (
-          <FoodCard 
-            key={food.fdcId} 
+          <FoodCard
+            key={food.fdcId}
             food={food}
             extraContent={
               <div className={styles.foodTitle}>

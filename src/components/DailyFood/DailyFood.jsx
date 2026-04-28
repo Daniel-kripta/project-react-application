@@ -9,7 +9,7 @@ export default function DailyFoods() {
   if (loading) return <p>Loading...</p>;
 
   const otherFoods = dailyFoods
-    ?.filter(food => food.id !== selectedDailyFood?.id)
+    ?.filter((food) => food.id !== selectedDailyFood?.id)
     .slice(0, 4);
 
   if (!otherFoods || otherFoods.length === 0) {
@@ -19,10 +19,10 @@ export default function DailyFoods() {
   return (
     <div className={styles.dailyGrid}>
       {otherFoods.map((food) => (
-        <div 
-          key={food.id} 
+        <div
+          key={food.id}
           className={styles.smallCard}
-          onClick={() => setSelectedDailyFood(food)} 
+          onClick={() => setSelectedDailyFood(food)}
         >
           <img src={food.image} alt={food.name} />
           <p>{food.name}</p>

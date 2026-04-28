@@ -1,124 +1,129 @@
-.searchControls{
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 5px;
+.searchControls {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 5px;
 }
-
 
 input,
 button,
 select {
-    color: var(--text-primary-color);
-    background-color: var(--extra-light-green);
-    height: 25px;
-    padding: 5px;
-    border: 1px solid var(--green);
-    border-radius: 5px;
+  color: var(--text-primary-color);
+  background-color: var(--extra-light-green);
+  height: 25px;
+  padding: 5px;
+  border: 1px solid var(--green);
+  border-radius: 5px;
 }
 
-button{
-    background-color: var(--light-green);
+button {
+  background-color: var(--light-green);
 }
-label{
-    color: var(--text-primary-color);
-    display: grid;
-    grid-template-columns: 10px 400px;
-    gap: 10px;
-    align-items: center;
-    font-size: 0.6em;
-}
-
-.filtersSection select{
-    margin-top: 10px;
-    margin-right: 10px;
+label {
+  color: var(--text-primary-color);
+  display: grid;
+  grid-template-columns: 10px 400px;
+  gap: 10px;
+  align-items: center;
+  font-size: 0.6em;
 }
 
-.result-item{
-    display: grid;
-    grid-template-columns: 110px auto;
-    margin: 15px;
-    padding: 10px;
-    border-bottom: 1px solid var(--green);
-    border-top: 1px solid var(--green);
+.filtersSection select {
+  margin-top: 10px;
+  margin-right: 10px;
 }
 
-.result-table:nth-child(even){
-    background-color: var(--extra-light-green);
-    margin: 0;
+.result-item {
+  display: grid;
+  grid-template-columns: 110px auto;
+  margin: 15px;
+  padding: 10px;
+  border-bottom: 1px solid var(--green);
+  border-top: 1px solid var(--green);
 }
 
-.result-table:nth-child(odd){
-    background-color: var(--light-color);
-    margin: 0;
+.result-table:nth-child(even) {
+  background-color: var(--extra-light-green);
+  margin: 0;
 }
 
-.result-item img{
-    height: 70px;
-    width: 100px;
+.result-table:nth-child(odd) {
+  background-color: var(--light-color);
+  margin: 0;
 }
 
-.btnsSearch{
-    display: grid;
-    grid-template-columns: 65% 30%;
-    margin-right: 15px;
-    gap: 5%;
+.result-item img {
+  height: 70px;
+  width: 100px;
 }
 
-.pagination{
-    text-align: center;
+.btnsSearch {
+  display: grid;
+  grid-template-columns: 65% 30%;
+  margin-right: 15px;
+  gap: 5%;
 }
 
-.pagination button{
-    margin: auto 5px;
+.pagination {
+  text-align: center;
+}
+
+.pagination button {
+  margin: auto 5px;
 }
 
 .skeletonCard {
-    display: grid;
-    height: 160px;
-    grid-template-columns: 110px auto;
-    padding: 10px;
-    border-bottom: 1px solid var(--green);
-    border-top: 1px solid var(--green);
-    background-color: white;
-    gap: 15px;
+  display: grid;
+  height: 160px;
+  grid-template-columns: 110px auto;
+  padding: 10px;
+  border-bottom: 1px solid var(--green);
+  border-top: 1px solid var(--green);
+  background-color: white;
+  gap: 15px;
 }
 
 .skeletonImg {
-    margin: 10px;
-    height: 70px;
-    width: 100px;
-    border-radius: 4px;
-    background: #e0e0e0;
-    animation: pulse 1.5s infinite ease-in-out;
+  margin: 10px;
+  height: 70px;
+  width: 100px;
+  border-radius: 4px;
+  background: #e0e0e0;
+  animation: pulse 1.5s infinite ease-in-out;
 }
 
 .skeletonContent {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .skeletonText {
-    height: 15px;
-    background: #e0e0e0;
-    margin-bottom: 10px;
-    border-radius: 4px;
-    animation: pulse 1.5s infinite ease-in-out;
+  height: 15px;
+  background: #e0e0e0;
+  margin-bottom: 10px;
+  border-radius: 4px;
+  animation: pulse 1.5s infinite ease-in-out;
 }
 
 .skeletonText.title {
-    width: 60%;
-    height: 20px;
+  width: 60%;
+  height: 20px;
 }
 
 .skeletonText.bar {
-    width: 90%;
-    height: 12px;
-    margin-top: 10px;
+  width: 90%;
+  height: 12px;
+  margin-top: 10px;
 }
 
 @keyframes pulse {
-    0% { background-color: #e0e0e0; }
-    50% { background-color: #f0f0f0; }
-    100% { background-color: #e0e0e0; }
+  0% {
+    background-color: #e0e0e0;
+  }
+  50% {
+    background-color: #f0f0f0;
+  }
+  100% {
+    background-color: #e0e0e0;
+  }
 }

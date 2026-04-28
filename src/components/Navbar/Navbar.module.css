@@ -1,106 +1,109 @@
 .header {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    position: -webkit-sticky;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    background-color: white;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: white;
 }
 
 .nav {
-    height: 50px;
-    display: flex;
-    justify-content: right;
-    align-items: center;
-    flex-grow: 1;
-    transition: margin-left 6s ease;
-    padding-right: 20px;
+  height: 50px;
+  display: flex;
+  justify-content: right;
+  align-items: center;
+  flex-grow: 1;
+  transition: margin-left 6s ease;
+  padding-right: 20px;
 }
 
 .logoHeader.hidden + .nav {
-    margin-left: 0;
+  margin-left: 0;
 }
 
 .logoHeader.visible + .nav {
-    margin-left: 0; 
+  margin-left: 0;
 }
 
 .navlist {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
-    list-style: none;
-    text-align: center;
-    white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  list-style: none;
+  text-align: center;
+  white-space: nowrap;
 }
 .navlist li {
-    height: 30px;
-    border: 1px solid var(--green);
-    padding: 4px;
-
-} 
-
-.textVisible { 
-    width: 75px;
-    opacity: 1;
-    transition: max-width 0.5s ease, opacity 0.3s ease;
-    display: inline-block;
-    overflow: hidden;
-    white-space: nowrap;
+  height: 30px;
+  border: 1px solid var(--green);
+  padding: 4px;
 }
 
+.textVisible {
+  width: 75px;
+  opacity: 1;
+  transition:
+    max-width 0.5s ease,
+    opacity 0.3s ease;
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+}
 
 .textHidden {
-    width: 0px;
-    opacity: 0;
-    transition: max-width 0.5s ease, opacity 0.3s ease;
-    display: inline-block;
-    overflow: hidden;
-    white-space: nowrap;
+  width: 0px;
+  opacity: 0;
+  transition:
+    max-width 0.5s ease,
+    opacity 0.3s ease;
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .navlist a {
-    color: var(--green);
-    text-transform: uppercase;
+  color: var(--green);
+  text-transform: uppercase;
 }
 
-.navlist img{
-    height: 20px;
-    width: auto;
-} 
+.navlist img {
+  height: 20px;
+  width: auto;
+}
 
 .navlist a.active {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .logoHeader {
-    transition: width 0.5s ease, opacity 0.4s ease, transform 0.5s ease;
-    overflow: hidden; 
-    display: flex;
-    align-items: center;
+  transition:
+    width 0.5s ease,
+    opacity 0.4s ease,
+    transform 0.5s ease;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
 }
-
 
 .logoHeader.hidden {
-    width: 0;
-    opacity: 0;
-    transform: translateX(-20px); 
-    pointer-events: none;
+  width: 0;
+  opacity: 0;
+  transform: translateX(-20px);
+  pointer-events: none;
 }
 
-
 .logoHeader.visible {
-    max-width: 185px;
-    opacity: 1;
-    transform: translateX(0);
-    pointer-events: auto;
+  max-width: 185px;
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
 }
 
 .logoHeader img {
-    height: 40px;
-    width: auto;
-    display: block;
+  height: 40px;
+  width: auto;
+  display: block;
 }

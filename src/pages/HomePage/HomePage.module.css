@@ -1,101 +1,100 @@
-
 .aboutHeader {
-    text-align: justify;
-    padding: 20px;
-    background-color: var(--light-green);
+  text-align: justify;
+  padding: 20px;
+  background-color: var(--light-green);
 }
 
 .aboutHeader h2 {
-    text-align: center;
+  text-align: center;
 }
 
 .aboutHeader p {
-    margin-top: 20px;
+  margin-top: 20px;
 }
 
 .featureCard {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    margin: 20px 20px;
-    text-align: left;
-    border: 1px solid var(--green);
-    border-radius: 10px;
-    padding: 10px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin: 20px 20px;
+  text-align: left;
+  border: 1px solid var(--green);
+  border-radius: 10px;
+  padding: 10px;
 }
 
 .featureCard:nth-child(2) {
-    text-align: right;
+  text-align: right;
 }
 
 .featureCard p {
-    margin-top: 10px;
-    text-align: justify;
+  margin-top: 10px;
+  text-align: justify;
 }
 
 .featureCard form {
-    text-align: center;
-    margin: 10px;
+  text-align: center;
+  margin: 10px;
 }
 
 .featureCard input {
-    width: 70%;
-    border: 1px solid var(--green);
-    border-radius: 5px;
-    padding: 3px;
+  width: 70%;
+  border: 1px solid var(--green);
+  border-radius: 5px;
+  padding: 3px;
 }
 
 .featureCard button {
-    width: 25%;
-    cursor: pointer;
-    background-color: var(--light-green);
-    border: 1px solid var(--green);
-    border-radius: 5px;
-    padding: 3px;
-    margin-left: 5px;
+  width: 25%;
+  cursor: pointer;
+  background-color: var(--light-green);
+  border: 1px solid var(--green);
+  border-radius: 5px;
+  padding: 3px;
+  margin-left: 5px;
 }
 
 .aboutIcon svg {
-    height: 40px;
-    width: 40px;
-    padding: 10px;
-    background-color: var(--light-green);
-    border-radius: 50%;
+  height: 40px;
+  width: 40px;
+  padding: 10px;
+  background-color: var(--light-green);
+  border-radius: 50%;
 }
 
 .dailyFood {
-    border-top: 1px solid var(--green);
-    border-bottom: 1px solid var(--green);
-    margin: 30px auto;
-    padding: 30px 15px;
+  border-top: 1px solid var(--green);
+  border-bottom: 1px solid var(--green);
+  margin: 30px auto;
+  padding: 30px 15px;
 }
 
 .mainDisplayDaily {
-    aspect-ratio: 1/1.2;
+  aspect-ratio: 1/1.2;
 }
 
 .dailyFood h2 {
-    text-align: justify;
+  text-align: justify;
 }
 
 .dailyFood img {
-    object-fit: fill;
-    width: 100%;
-    aspect-ratio: 1/0.7;
-    border-radius: 10px;
+  object-fit: fill;
+  width: 100%;
+  aspect-ratio: 1/0.7;
+  border-radius: 10px;
 }
 
 .dailyFoodCards {
-    container-type: inline-size;
+  container-type: inline-size;
 }
 
 .dailyCard {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid var(--green);
-    border-radius: 10px;
-    margin: 2px;
-    cursor: pointer;
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--green);
+  border-radius: 10px;
+  margin: 2px;
+  cursor: pointer;
 }
 
 .truncateName {
@@ -117,61 +116,60 @@
 }
 
 .dailyGrid {
-    display: grid;
-    height: 450px;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 50% 50%;
-    gap: 5%;
-    aspect-ratio: 1/1.4;
+  display: grid;
+  height: 450px;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 50% 50%;
+  gap: 5%;
+  aspect-ratio: 1/1.4;
 }
 
 .smallCard {
-    border-radius: 10px;
+  border-radius: 10px;
 }
 
 .shareSocialDish {
-    margin-top: 15px;
-    padding-top: 15px;
-    border-top: 10px solid var(--light-green);
-    text-align: center;
-    font-size: 1.5em;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 10px solid var(--light-green);
+  text-align: center;
+  font-size: 1.5em;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.linkDetailHP{
-    background-color: var(--light-green);
-    color: var(--green);
-    font-weight: bold;
-    margin: 0 auto;
-    padding: 5px;
-    text-align: center;
-    font-weight: bold;
-    font-size: 0.7em;
-    bottom: 0;
-    border-radius: 5px;
+.linkDetailHP {
+  background-color: var(--light-green);
+  color: var(--green);
+  font-weight: bold;
+  margin: 0 auto;
+  padding: 5px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 0.7em;
+  bottom: 0;
+  border-radius: 5px;
 }
-
 
 @media (min-width: 480px) {
-    .dailyFoodCards {
-        display: grid;
-        grid-template-columns: 60% 38%;
-        gap: 2%;
-    }
+  .dailyFoodCards {
+    display: grid;
+    grid-template-columns: 60% 38%;
+    gap: 2%;
+  }
 
-    .dailyCard {
-        font-size: 2.15cqw;
-    }
-    
-    .mainDisplayDaily {
-        height: 99.5%;
-        aspect-ratio: 1/1;
-    }
+  .dailyCard {
+    font-size: 2.15cqw;
+  }
 
-    .dailyGrid {
-        height: inherit;
-        aspect-ratio: 1/1.4;
-    }
+  .mainDisplayDaily {
+    height: 99.5%;
+    aspect-ratio: 1/1;
+  }
+
+  .dailyGrid {
+    height: inherit;
+    aspect-ratio: 1/1.4;
+  }
 }

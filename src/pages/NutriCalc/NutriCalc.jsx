@@ -6,8 +6,12 @@ import styles from "./NutriCalc.module.css";
 import defaultDishImg from "../../assets/images/defaultDishes.png";
 
 export default function NutriCalc() {
+  // Genera un ID único para el plato basado en su nombre e ingredientes
   const buildDishId = (name, ingredients) => {
-    const safeName = name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+    const safeName = name
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-|-$/g, "");
     const ingredientKey = ingredients
       .map((item) => item.fdcId)
       .sort((a, b) => a - b)
@@ -17,7 +21,6 @@ export default function NutriCalc() {
 
   const { savedFoods } = useSavedFood();
   const { saveDish } = useDish();
-
 
   const [currentDishId, setCurrentDishId] = useState(null);
   const [currentDishIngredients, setCurrentDishIngredients] = useState([]);
@@ -91,13 +94,12 @@ export default function NutriCalc() {
     setShowSavedMsg(false);
   };
 
- 
   const handleSaveDish = () => {
     const trimmedName = dishName.trim();
     if (!trimmedName || currentDishIngredients.length === 0) return;
 
-  
-    const dishIdToSave = currentDishId || buildDishId(trimmedName, currentDishIngredients);
+    const dishIdToSave =
+      currentDishId || buildDishId(trimmedName, currentDishIngredients);
 
     const newDish = {
       id: dishIdToSave,
@@ -109,7 +111,6 @@ export default function NutriCalc() {
     };
 
     saveDish(newDish);
-
 
     setCurrentDishId(dishIdToSave);
     setIsDirty(false);
@@ -124,7 +125,6 @@ export default function NutriCalc() {
       if (!confirmExit) return;
     }
 
-
     setDishName("");
     setDishImage("");
     setCurrentDishIngredients([]);
@@ -134,47 +134,47 @@ export default function NutriCalc() {
     setShowSavedMsg(false);
   };
 
-
-const calculatedNutrients = (() => {
+  // Calcula los nutrientes totales del plato normalizados a 100g
+  // Fórmula: (valor_por_100g_del_ingrediente / 100) * gramos_usados → suma → / peso_total * 100
+  const calculatedNutrients = (() => {
     const totals = {};
     let totalDishWeight = 0;
 
     currentDishIngredients.forEach((item) => {
       if (!item.foodNutrients) return;
-      
+
       const itemWeight = Number(item.quantity);
       totalDishWeight += itemWeight;
-      
+
       item.foodNutrients.forEach((nut) => {
         const name = nut.nutrientName || nut?.nutrient?.name;
         const unit = nut.unitName || nut?.nutrient?.unitName;
-        
-        const valuePer100gOfIngredient = nut.value ?? nut.amount ?? 0; 
-        
+
+        const valuePer100gOfIngredient = nut.value ?? nut.amount ?? 0;
+
         if (!name) return;
-        
+
         if (!totals[name]) {
           totals[name] = { name, unit, absoluteTotalValue: 0 };
         }
 
+        const contributionToTotalDish =
+          (valuePer100gOfIngredient / 100) * itemWeight;
 
-        const contributionToTotalDish = (valuePer100gOfIngredient / 100) * itemWeight;
-        
         totals[name].absoluteTotalValue += contributionToTotalDish;
       });
     });
 
-
     const nutrientsPer100gOfDish = Object.values(totals).map((nut) => {
+      const finalValue =
+        totalDishWeight > 0
+          ? (nut.absoluteTotalValue / totalDishWeight) * 100
+          : 0;
 
-      const finalValue = totalDishWeight > 0 
-        ? (nut.absoluteTotalValue / totalDishWeight) * 100 
-        : 0;
-        
-      return { 
-        name: nut.name, 
-        unit: nut.unit, 
-        value: finalValue 
+      return {
+        name: nut.name,
+        unit: nut.unit,
+        value: finalValue,
       };
     });
 
@@ -183,13 +183,13 @@ const calculatedNutrients = (() => {
       .sort((a, b) => b.value - a.value);
   })();
 
-
   const availableNutrientsForFilter = useMemo(() => {
     const allNames = new Set();
     calculatedNutrients.forEach((n) => allNames.add(n.name));
     return Array.from(allNames).sort();
   }, [calculatedNutrients]);
 
+  // Detecta si algún ingrediente no tiene datos para los filtros activos, para mostrar aviso
   const hasMissingData = useMemo(() => {
     if (activeNutrients.length === 0) return false;
     return currentDishIngredients.some((item) =>

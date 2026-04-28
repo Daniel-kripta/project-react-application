@@ -4,14 +4,13 @@ import styles from "./SaveButton.module.css";
 
 export default function SaveButton({ food }) {
   const { isSaved, addToSaved, removeFromSaved } = useSavedFood();
-  
 
   const saved = isSaved(food.fdcId);
 
   const handleClick = (e) => {
     e.preventDefault();
-    e.stopPropagation(); 
-    
+    e.stopPropagation(); // Evita que el click active el NavLink de la FoodCard
+
     if (saved) {
       removeFromSaved(food.fdcId);
     } else {
@@ -20,11 +19,11 @@ export default function SaveButton({ food }) {
   };
 
   return (
-    <button 
+    <button
       className={`${styles.btnFav} ${saved ? styles.active : ""}`}
       onClick={handleClick}
     >
-      <img src={savedIcon} alt="save" /> 
+      <img src={savedIcon} alt="save" />
       <span>{saved ? "Saved" : "Save"}</span>
     </button>
   );

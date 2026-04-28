@@ -1,7 +1,7 @@
 :root {
   --green: #5eaa19;
-  --light-color: #FFF;
-  --light-green: #DFEFDB;
+  --light-color: #fff;
+  --light-green: #dfefdb;
   --extra-light-green: #f1f8ef;
   --text-primary-color: #304030;
 }
@@ -15,32 +15,31 @@
 body {
   background-color: var(--light-color);
   color: var(--text-primary-color);
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
   max-width: 1000px;
   margin: 0 auto;
   font-family: sans-serif;
-  }
+}
 
 a {
   text-decoration: none;
   color: inherit;
-
 }
 
-main{
+main {
   margin: 25px auto;
   font-size: 1.1rem;
   color: var(--text-primary-color);
 }
 
-
-
 h1,
 h2,
-h3{
-  text-align: center;  
+h3 {
+  text-align: center;
 }
 
-button{
+button {
   cursor: pointer;
 }

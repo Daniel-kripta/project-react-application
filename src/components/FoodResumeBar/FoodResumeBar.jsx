@@ -1,6 +1,7 @@
 import styles from "./FoodResumeBar.module.css";
 
 export default function FoodResumeBar({ food }) {
+  // Busca por varios nombres posibles porque la API USDA no es consistente entre tipos de alimento
   const getNutrientValue = (names, targetUnit = null) => {
     const nutrient = food?.foodNutrients?.find((n) => {
       const nameMatches =
