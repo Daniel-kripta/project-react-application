@@ -135,35 +135,50 @@ export default function NutriCalc() {
   };
 
 
-  const calculatedNutrients = (() => {
+const calculatedNutrients = (() => {
     const totals = {};
     let totalDishWeight = 0;
 
-   
     currentDishIngredients.forEach((item) => {
       if (!item.foodNutrients) return;
       
       const itemWeight = Number(item.quantity);
       totalDishWeight += itemWeight;
       
-      const multiplier = itemWeight / 100;
-      
       item.foodNutrients.forEach((nut) => {
         const name = nut.nutrientName || nut?.nutrient?.name;
         const unit = nut.unitName || nut?.nutrient?.unitName;
-        const value = nut.value ?? nut.amount ?? 0;
+        
+        const valuePer100gOfIngredient = nut.value ?? nut.amount ?? 0; 
+        
         if (!name) return;
-        if (!totals[name]) totals[name] = { name, unit, value: 0 };
-        totals[name].value += value * multiplier;
+        
+        if (!totals[name]) {
+          totals[name] = { name, unit, absoluteTotalValue: 0 };
+        }
+
+
+        const contributionToTotalDish = (valuePer100gOfIngredient / 100) * itemWeight;
+        
+        totals[name].absoluteTotalValue += contributionToTotalDish;
       });
     });
 
-    const nutrientsPer100g = Object.values(totals).map((nut) => {
-      const valuePer100g = totalDishWeight > 0 ? (nut.value / totalDishWeight) * 100 : 0;
-      return { ...nut, value: valuePer100g };
+
+    const nutrientsPer100gOfDish = Object.values(totals).map((nut) => {
+
+      const finalValue = totalDishWeight > 0 
+        ? (nut.absoluteTotalValue / totalDishWeight) * 100 
+        : 0;
+        
+      return { 
+        name: nut.name, 
+        unit: nut.unit, 
+        value: finalValue 
+      };
     });
 
-    return nutrientsPer100g
+    return nutrientsPer100gOfDish
       .filter((nut) => nut.value > 0)
       .sort((a, b) => b.value - a.value);
   })();
