@@ -38,7 +38,7 @@ function DishCard({ dish, onDelete }) {
   const hasFilters = dish.activeFilters && dish.activeFilters.length > 0;
   const totalMass = dish.ingredients.reduce((acc, item) => acc + (Number(item.quantity) || 0), 0);
 
-  const renderNutrientList = (nutrients, sortByAlpha = true) => {
+const renderNutrientList = (nutrients, sortByAlpha = true) => {
     const listToRender = sortByAlpha 
       ? [...nutrients].sort((a, b) => a.name.localeCompare(b.name))
       : nutrients;
@@ -46,13 +46,11 @@ function DishCard({ dish, onDelete }) {
     return (
       <div className={styles.nutrientList}>
         {listToRender.map(n => {
-          const valuePer100g = totalMass > 0 ? (n.value / totalMass) * 100 : 0;
-
           return (
             <div key={n.name} className={styles.nutrientItem}>
               <span>{n.name}: </span>
               <span className={styles.nutrientValue}>
-                {valuePer100g.toFixed(1)} {n.unit}
+                {n.value.toFixed(1)} {n.unit}
               </span>
             </div>
           );
